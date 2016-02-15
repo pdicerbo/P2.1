@@ -5,4 +5,4 @@ all:
 
 clean:
 	$(MAKE) -C src clean
-	rm *.x
+	rm -rf *.x
