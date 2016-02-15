@@ -19,10 +19,10 @@ program read_integer_from_stdin
 
   is_s = is_sorted(input_data)
 
-  if(is_s == 0) then
-     write(*,*) "the array loaded is sorted "
+  if(is_s == 0 .or. is_s == arr_len - 1) then
+     write(*,*) "the array loaded is sorted. is_s = ", is_s
   else
-     write(*,*) "the array loaded is not sorted "
+     write(*,*) "the array loaded is not sorted. is_s = ", is_s
   end if
 
   ! checksum control

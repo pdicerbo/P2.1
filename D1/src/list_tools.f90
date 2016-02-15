@@ -8,7 +8,7 @@ contains
     real, dimension(:) :: arr
     do j=1, size(arr)-1
        if( arr(j) > arr(j+1)) then
-          check = 10
+          check = check + 1
        end if
     end do
     
