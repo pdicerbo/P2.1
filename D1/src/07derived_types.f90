@@ -9,19 +9,18 @@ program read_integer_from_stdin
   
   integer :: arr_len = 0
   integer :: i = 1, is_s
-  real :: read_checksum, checksum = 0
+  real :: read_checksum, checksum = 0, diff
   type (mytype), allocatable, dimension(:) :: input_data
   
   read(5,*) arr_len
   
   write(*,*) 
   write(*,*) "the array lenght is: ", arr_len
-
+  
   allocate(input_data(arr_len))
   ! allocate((input_data % val)(arr_len))
 
-  read(5, '(I10,F10.6)') input_data % key, input_data % val
-  write(*,*) "reading done"
+  read(5, *) input_data
   read(5, *) read_checksum
 
   is_s = is_sorted(input_data % val)
@@ -40,8 +39,9 @@ program read_integer_from_stdin
   end do
 
   write(*,*)
+  diff = abs( read_checksum - checksum ) / checksum
   
-  if( read_checksum == checksum) then
+  if(diff < 1.e-5) then
      write(*,*) "the checksum calculated is correct"
   else
      write(*,*) "the checksum calculated is wrong"     
