@@ -17,12 +17,13 @@ program read_integer_from_stdin
   read(5, *) input_data
   read(5, *) read_checksum
 
-  is_s = is_sorted(input_data)
+  is_s = is_sorted(input_data, ascending)
+  ! is_s = is_sorted(input_data, descending)
 
   if(is_s == 0 .or. is_s == arr_len - 1) then
-     write(*,*) "the array loaded is sorted. is_s = ", is_s
+     write(*,*) "the array loaded is sorted."
   else
-     write(*,*) "the array loaded is not sorted. is_s = ", is_s
+     write(*,*) "the array loaded is not sorted."
   end if
 
   ! checksum control
