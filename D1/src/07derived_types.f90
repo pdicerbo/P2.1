@@ -18,7 +18,6 @@ program read_integer_from_stdin
   write(*,*) "the array lenght is: ", arr_len
   
   allocate(input_data(arr_len))
-  ! allocate((input_data % val)(arr_len))
 
   read(5, *) input_data
   read(5, *) read_checksum
@@ -26,9 +25,9 @@ program read_integer_from_stdin
   is_s = is_sorted(input_data % val)
 
   if(is_s == 0 .or. is_s == arr_len - 1) then
-     write(*,*) "the array loaded is sorted. is_s = ", is_s
+     write(*,*) "the array loaded is sorted"
   else
-     write(*,*) "the array loaded is not sorted. is_s = ", is_s
+     write(*,*) "the array loaded is not sorted"
   end if
   
   ! checksum control
@@ -51,4 +50,3 @@ program read_integer_from_stdin
   write(*,*)
   
 end program read_integer_from_stdin
-
