@@ -17,7 +17,7 @@ program read_integer_from_stdin
   read(5, *) input_data
   read(5, *) read_checksum
 
-  is_s = is_sorted(input_data % val)
+  is_s = is_sorted(input_data, ascending, bykey)
 
   if(is_s == 0 .or. is_s == arr_len - 1) then
      write(*,*) "the array loaded is sorted"
