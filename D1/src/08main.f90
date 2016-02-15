@@ -17,6 +17,7 @@ program read_integer_from_stdin
   read(5, *) input_data
   read(5, *) read_checksum
 
+  ! check ordering
   write(*,*)
   write(*,*) "check if data are ordered by ASCENDING VALUES"
   is_s = is_sorted(input_data, ascending, byvalue)
