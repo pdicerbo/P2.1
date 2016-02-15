@@ -2,7 +2,7 @@ program read_integer_from_stdin
   implicit none
 
   integer :: arr_len = 0
-  integer :: i = 1, read_checksum, checksum = 0, iss
+  integer :: i = 1, read_checksum, checksum = 0, is_s
   integer, allocatable, dimension(:) :: input_data
 
   interface
@@ -23,14 +23,15 @@ program read_integer_from_stdin
   read(5, *) input_data
   read(5, *) read_checksum
 
-  ! iss = is_sorted(input_data)
+  is_s = is_sorted(input_data)
+
+  if(is_s == 0) then
+     write(*,*) "the array loaded is sorted "
+  else
+     write(*,*) "the array loaded is not sorted "
+  end if
   
-  write(*,*) "sorting = ", is_sorted(input_data)
-  ! if( is_sorted(input_data) == 0 ) then
-  !    write(*,*) "the array loaded is sorted"
-  ! else
-  !    write(*,*) "the array loaded is not sorted"
-  
+  ! checksum control
   do
      checksum = checksum + input_data(i)
      i = i + 1
@@ -56,8 +57,10 @@ integer function is_sorted(arr)
   integer, dimension(:) :: arr
 
   do j=1, size(arr)-1
-     if( arr(j) > arr(j + 1)) check = check + 1
+     if( arr(j) > arr(j+1)) then
+        check = 10
+     end if
   end do
-  
+
   is_sorted = check
 end function is_sorted
