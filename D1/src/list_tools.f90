@@ -1,7 +1,6 @@
 module list_tools
 
   implicit none
-  ! integer :: j, check = 0
   logical, parameter :: ascending = .true.
   logical, parameter :: descending = .false.
 
