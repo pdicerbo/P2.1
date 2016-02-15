@@ -1,17 +1,10 @@
 program read_integer_from_stdin
+  use list_tools
   implicit none
 
   integer :: arr_len = 0
-  integer :: i = 1, read_checksum, checksum = 0, is_s
+  integer :: i = 1, is_s, read_checksum, checksum = 0
   integer, allocatable, dimension(:) :: input_data
-
-  interface
-     integer function is_sorted(arr)
-       implicit none
-       integer :: j, check
-       integer, dimension(:) :: arr
-     end function is_sorted
-  end interface
   
   read(5,*) arr_len
   
@@ -51,16 +44,3 @@ program read_integer_from_stdin
   
 end program read_integer_from_stdin
 
-integer function is_sorted(arr)
-  implicit none
-  integer :: j, check = 0
-  integer, dimension(:) :: arr
-
-  do j=1, size(arr)-1
-     if( arr(j) > arr(j+1)) then
-        check = check + 1
-     end if
-  end do
-
-  is_sorted = check
-end function is_sorted

@@ -18,6 +18,9 @@ default: $(EXEC)
 
 # here you have to put the rules for produces the executables
 # with the correct object files you want to include
+../03sort_int.x: list_tools.o 03sort_int.o
+	$(CC) -o $@ $(FFLAGS) $^
+
 ../04sort_real.x: list_tools.o 04sort_real.o
 	$(CC) -o $@ $(FFLAGS) $^
 
