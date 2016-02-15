@@ -1,5 +1,5 @@
 CC=gfortran
-FFLAGS=
+FFLAGS=-std=f2003
 SRC=hello_world.f90 read_integer.f90 read_real.f90
 OBJ=$(SRC:%.f90=%.o)
 EXEC=$(SRC:%.f90=../%.x)
@@ -13,7 +13,7 @@ EXEC=$(SRC:%.f90=../%.x)
 default: $(EXEC)
 
 %.o: %.f90
-	$(CC) -c $^
+	$(CC) $(FFLAGS) -c $^
 
 # here you have to put the rules for produces the executables
 # with the correct object files you want to include
