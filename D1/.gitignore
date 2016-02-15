@@ -1,5 +1,6 @@
 # Compiled source #
 ###################
+*.mod
 *.com
 *.class
 *.dll
