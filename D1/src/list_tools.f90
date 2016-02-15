@@ -26,15 +26,15 @@ contains
 
     if(present(sort_ord)) then
        if(sort_ord .eqv. ascending) then
-          if(check == size(arr) - 1) then
-             write(*,*) "the array is not in ascending order"
-          else if(check == 0) then
+          if(check == 0) then
              write(*,*) "the array is in ascending order"
+          else
+             write(*,*) "the array is not in ascending order"
           end if
        else if (sort_ord .eqv. descending) then
           if(check == size(arr) - 1) then
              write(*,*) "the array is in descending order"
-          else if(check == 0) then
+          else
              write(*,*) "the array is not in descending order"
           end if
        end if
@@ -56,15 +56,15 @@ contains
 
     if(present(sort_ord)) then
        if(sort_ord .eqv. ascending) then
-          if(check == size(arr) - 1) then
-             write(*,*) "the array is not in ascending order"
-          else if(check == 0) then
+          if(check == 0) then
              write(*,*) "the array is in ascending order"
+          else
+             write(*,*) "the array is not in ascending order"
           end if
        else if (sort_ord .eqv. descending) then
           if(check == size(arr) - 1) then
              write(*,*) "the array is in descending order"
-          else if(check == 0) then
+          else
              write(*,*) "the array is not in descending order"
           end if
        end if
@@ -86,7 +86,7 @@ contains
                 check = check + 1
              end if
           end do
-       else
+       else ! k_v .eqv. byvalue
           do j=1, size(arr)-1
              if( arr(j) % val > arr(j+1) % val) then
                 check = check + 1
@@ -105,45 +105,45 @@ contains
     if( present(sort_ord) .and. present(k_v) ) then
        if(sort_ord .eqv. ascending) then
           if(k_v .eqv. bykey) then
-             if(check == size(arr) - 1) then
-                write(*,*) "the array keys are not in ascending order"
-             else if(check == 0) then
+             if(check == 0) then
                 write(*,*) "the array keys are in ascending order"
+             else
+                write(*,*) "the array keys are not in ascending order"
              end if
           else ! k_v .eqv. byvalue
-             if(check == size(arr) - 1) then
-                write(*,*) "the array values are not in ascending order"
-             else if(check == 0) then
+             if(check == 0) then
                 write(*,*) "the array values are in ascending order"
+             else
+                write(*,*) "the array values are not in ascending order"
              end if
           end if
        else if (sort_ord .eqv. descending) then
           if(k_v .eqv. bykey) then
              if(check == size(arr) - 1) then
-                write(*,*) "the array is in descending order"
-             else if(check == 0) then
-                write(*,*) "the array is not in descending order"
+                write(*,*) "the array keys are in descending order"
+             else
+                write(*,*) "the array keys are not in descending order"
              end if
           else ! k_v .eqv. byval
              if(check == size(arr) - 1) then
                 write(*,*) "the array values are in descending order"
-             else if(check == 0) then
+             else
                 write(*,*) "the array values are not in descending order"
              end if
           end if
        end if
     else if(present(sort_ord)) then
        if(sort_ord .eqv. ascending) then
-          if(check == size(arr) - 1) then
-             write(*,*) "the array is not in ascending order"
-          else if(check == 0) then
-             write(*,*) "the array is in ascending order"
+          if(check == 0) then
+             write(*,*) "the array values are in ascending order"
+          else
+             write(*,*) "the array values are not ascending order"
           end if
        else if (sort_ord .eqv. descending) then
           if(check == size(arr) - 1) then
-             write(*,*) "the array is in descending order"
+             write(*,*) "the array values are in descending order"
           else if(check == 0) then
-             write(*,*) "the array is not in descending order"
+             write(*,*) "the array values are not in descending order"
           end if
        end if
     else
