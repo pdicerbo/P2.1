@@ -3,7 +3,7 @@ program read_integer_from_stdin
 
   integer :: arr_len = 0
   integer :: i = 1, read_checksum, checksum = 0
-  integer, allocatable, dimension(:) :: input_data
+  real, allocatable, dimension(:) :: input_data
   
   read(5,*) arr_len
   
