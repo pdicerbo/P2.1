@@ -21,11 +21,13 @@ default: $(EXEC)
 ../hello_world.x: hello_world.o
 	$(CC) -o $@ $(FFLAGS) $^
 
-../read_integer.x: read_integer.o
+../01read_integer.x: 01read_integer.o
 	$(CC) -o $@ $(FFLAGS) $^
 
-../read_real.x: read_real.o
+../02read_real.x: 02read_real.o
 	$(CC) -o $@ $(FFLAGS) $^
 
+../%.x: %.o
+	$(CC) -o $@ $(FFLAGS) $^
 clean:
 	rm *.o
