@@ -32,23 +32,24 @@ CONTAINS
 
     implicit none
     real, dimension(:), intent(inout) :: dat
-    integer :: num, i, nswap
+    integer :: num, i
     real :: tmp
-
+    logical :: swap
+    
     num = size(dat, 1)
     if (num < 2) return
 
-    nswap = 1
-
-    do while( nswap > 0 )
-       nswap = 0
+    swap = .true.
+    
+    do while( swap .eqv. .true. )
+       swap = .false.
 
        do i=1,num-1
           if(dat(i) > dat(i + 1)) then
              tmp = dat(i)
              dat(i) = dat(i+1)
              dat(i+1) = tmp
-             nswap = nswap + 1
+             swap = .true.
           end if
        end do
     end do

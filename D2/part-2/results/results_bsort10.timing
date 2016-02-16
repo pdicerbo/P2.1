@@ -1,27 +1,27 @@
  Sorting     500 unsorted random elements took:    0.003333 seconds
  Sorting     500  already sorted elements took:    0.000000 seconds
- Sorting     500   mostly sorted elements took:    0.003333 seconds
+ Sorting     500   mostly sorted elements took:    0.000000 seconds
  Sorting    1000 unsorted random elements took:    0.013333 seconds
  Sorting    1000  already sorted elements took:    0.000000 seconds
- Sorting    1000   mostly sorted elements took:    0.006667 seconds
- Sorting    2000 unsorted random elements took:    0.043333 seconds
+ Sorting    1000   mostly sorted elements took:    0.003333 seconds
+ Sorting    2000 unsorted random elements took:    0.040000 seconds
  Sorting    2000  already sorted elements took:    0.000000 seconds
  Sorting    2000   mostly sorted elements took:    0.013334 seconds
- Sorting    5000 unsorted random elements took:    0.153333 seconds
+ Sorting    5000 unsorted random elements took:    0.146666 seconds
  Sorting    5000  already sorted elements took:    0.000000 seconds
- Sorting    5000   mostly sorted elements took:    0.063333 seconds
- Sorting   10000 unsorted random elements took:    0.496667 seconds
+ Sorting    5000   mostly sorted elements took:    0.063334 seconds
+ Sorting   10000 unsorted random elements took:    0.516666 seconds
  Sorting   10000  already sorted elements took:    0.000000 seconds
- Sorting   10000   mostly sorted elements took:    0.170000 seconds
- Sorting   20000 unsorted random elements took:    2.106667 seconds
+ Sorting   10000   mostly sorted elements took:    0.176667 seconds
+ Sorting   20000 unsorted random elements took:    2.166667 seconds
  Sorting   20000  already sorted elements took:    0.000000 seconds
- Sorting   20000   mostly sorted elements took:    0.850000 seconds
- Sorting   50000 unsorted random elements took:   13.493332 seconds
+ Sorting   20000   mostly sorted elements took:    0.903333 seconds
+ Sorting   50000 unsorted random elements took:   13.849998 seconds
  Sorting   50000  already sorted elements took:    0.000000 seconds
- Sorting   50000   mostly sorted elements took:    5.703333 seconds
- Sorting  100000 unsorted random elements took:   54.316666 seconds
+ Sorting   50000   mostly sorted elements took:    6.119999 seconds
+ Sorting  100000 unsorted random elements took:   55.923325 seconds
  Sorting  100000  already sorted elements took:    0.000000 seconds
- Sorting  100000   mostly sorted elements took:   28.393333 seconds
- Sorting  200000 unsorted random elements took:  226.363297 seconds
- Sorting  200000  already sorted elements took:    0.000000 seconds
- Sorting  200000   mostly sorted elements took:   83.160004 seconds
+ Sorting  100000   mostly sorted elements took:   29.516670 seconds
+ Sorting  200000 unsorted random elements took:  229.339966 seconds
+ Sorting  200000  already sorted elements took:    0.003357 seconds
+ Sorting  200000   mostly sorted elements took:   83.983307 seconds
