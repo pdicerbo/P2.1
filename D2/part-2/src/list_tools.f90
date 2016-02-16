@@ -6,13 +6,37 @@ module list_tools
   logical, parameter :: descending = .false.
   logical, parameter :: bykey = .true.
   logical, parameter :: byvalue = .false.
-
+  public :: is_sorted, simplesort
+  
   interface is_sorted
      module procedure is_sorted_int, is_sorted_real, is_sorted_pair
   end interface
-
+  
 contains
 
+  ! pathetically bad sorting algorithm:
+  ! loop over all unique pairs and swap the values
+  ! if the left element is larger than the right one.
+  SUBROUTINE simplesort(dat)
+    IMPLICIT NONE
+    REAL,DIMENSION(:),INTENT(inout) :: dat
+    INTEGER :: num, i, j
+    REAL :: tmp
+    
+    num = SIZE(dat,1)
+    IF (num < 2) RETURN
+    DO i=1,num-1
+       DO j=i+1,num
+          IF (dat(i) > dat(j)) THEN
+             tmp = dat(i)
+             dat(i) = dat(j)
+             dat(j) = tmp
+          END IF
+       END DO
+    END DO
+  END SUBROUTINE simplesort
+
+  
   integer function is_sorted_int(arr, sort_ord)
     integer, dimension(:) :: arr
     integer :: j, check = 0
