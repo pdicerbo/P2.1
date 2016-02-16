@@ -9,8 +9,8 @@ PROGRAM real_sort
   ! INTEGER,PARAMETER,DIMENSION(9) :: sizes = (/ &
   !     500,1000,2000,5000,10000,20000,50000,100000,200000 /)
 
-  INTEGER,PARAMETER,DIMENSION(1) :: sizes = (/ &
-       10 /) !,16/) !,32,128,256 /)
+  INTEGER,PARAMETER,DIMENSION(6) :: sizes = (/ &
+       1024,8192,32768,65536,262144,524288 /) !,16/) !,32,128,256 /)
 
   ! initialize pseudo random number generator
   CALL RANDOM_SEED()
@@ -34,18 +34,18 @@ PROGRAM real_sort
       iss = is_sorted(dat)
       if(iss .ne. 0 .and. iss .ne. (size(dat)-1) ) then
          write(*,*) "Array not sorted"
-         write(*,*) dat
+         ! write(*,*) dat
       end if
 
       ! call sort again on the already sorted data
-      ! CALL CPU_TIME(time1)
-      ! CALL mergesort(dat)
-      ! CALL CPU_TIME(time2)
-      ! WRITE(*,FMT=666) num, 'already sorted', time2-time1
-      ! iss = is_sorted(dat)
-      ! if(iss .ne. 0 .and. iss .ne. (size(dat)-1) ) then
-      !    write(*,*) "Array not sorted"
-      ! end if
+      CALL CPU_TIME(time1)
+      CALL mergesort(dat)
+      CALL CPU_TIME(time2)
+      WRITE(*,FMT=666) num, 'already sorted', time2-time1
+      iss = is_sorted(dat)
+      if(iss .ne. 0 .and. iss .ne. (size(dat)-1) ) then
+         write(*,*) "Array not sorted"
+      end if
 
       ! swap a few elements of the sorted array and sort one more time
       CALL swap(dat,INT(LOG(REAL(num))))
