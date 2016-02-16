@@ -1,6 +1,6 @@
 CC=gfortran
 FFLAGS=-std=f2003
-SRC=09_simplesort.f90
+SRC=09_simplesort.f90 09_quicksort.f90
 OBJ=$(SRC:%.f90=%.o)
 EXEC=$(SRC:%.f90=../%.x)
 
@@ -23,10 +23,8 @@ sorting.o: sorting.f90
 
 # here you have to put the rules for produces the executables
 # with the correct object files you want to include
-../09_simplesort.x: sorting.o list_tools.o 09_simplesort.o
-	$(CC) -o $@ $(FFLAGS) $^
 
-../%.x: %.o
+../%.x: sorting.o list_tools.o %.o
 	$(CC) -o $@ $(FFLAGS) $^
 
 clean:

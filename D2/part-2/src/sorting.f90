@@ -1,7 +1,7 @@
 MODULE sorting
   IMPLICIT NONE
   PRIVATE
-  PUBLIC :: simplesort, quicksort
+  PUBLIC :: simplesort, quicksort, bubblesort
 CONTAINS
   
   ! pathetically bad sorting algorithm:
@@ -25,6 +25,18 @@ CONTAINS
        END DO
     END DO
   END SUBROUTINE simplesort
+
+  subroutine bubblesort(dat)
+
+    implicit none
+    real, dimension(:), intent(inout) :: dat
+    integer :: num, j
+    real :: tmp
+
+    num = size(dat, 1)
+    if (num < 2) return
+
+  end subroutine bubblesort
   
   ! quicksort implementation via recursion
   ! top-level takes whole array, recursions work on subsets.
