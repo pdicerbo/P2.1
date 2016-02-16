@@ -32,11 +32,13 @@ CONTAINS
 
     implicit none
     real, dimension(:), intent(inout) :: dat
-    integer :: num, i, nswap = 1
+    integer :: num, i, nswap
     real :: tmp
 
     num = size(dat, 1)
     if (num < 2) return
+
+    nswap = 1
 
     do while( nswap > 0 )
        nswap = 0
