@@ -35,12 +35,6 @@ CONTAINS
     
     num = size(dat)
     if (num < 2) return
-    write(*,*) "within mergesort() function"
-    if(mod(num, 2) .ne. 0) then
-       write(*,*) "lenght of the array must be even"
-       write(*,*) "return"
-       return
-    endif
 
     block_size = 2
     first_cycle = .true.
@@ -57,16 +51,14 @@ CONTAINS
              j = j + 2
           end do
           first_cycle = .false.
-          write(*,*) "block_size = ", block_size
-          write(*,*) dat
        else
           j = 1
           
           do while(j < num)
-             if(dat(j+block_size-1) > dat(j+block_size)) call mymerge(dat, block_size, j)
-             write(*,*) "block_size = ", block_size, "j = ", j
-             write(*,*) dat
+             ! if(dat(j+block_size-1) > dat(j+block_size)) call mymerge(dat, block_size, j)
+             call mymerge(dat, block_size, j)
              j = j + 2*block_size
+             ! write(*,*)"mymerge loop with j = ",j,"bloc_size = ", block_size
           end do
           block_size = 2*block_size
        end if
@@ -76,15 +68,27 @@ CONTAINS
   subroutine mymerge(dat, bsize, ind)
     implicit none
     real, dimension(:), intent(inout) :: dat
-    integer :: bsize, ind, left, right, j
+    integer :: bsize, ind, left, right, j, start, endpoint, center
     real, dimension(2*bsize) :: tmp_dat
-    ! write(*,*) "within mymerge() function"
-    left = ind
-    right = ind + bsize
+    start = ind
+    center = ind + bsize
+    left = start
+    right = center
+    endpoint = ind+2*bsize
+    if(endpoint > size(dat)+1) then
+       write(*,*) "bef"
+       write(*,*) ind, bsize, left, right, endpoint, size(dat)
+       left = ind - bsize
+       start = ind - bsize
+       center = ind
+       right = ind
+       endpoint = size(dat)+1
+       write(*,*) "after"
+       write(*,*) ind, bsize, left, right, endpoint, size(dat)
+    end if
     j = 1
-    
-    ! do while(j <= 2*bsize)
-    do while(left < ind+bsize .and. right < ind+2*bsize)
+
+    do while(left < center .and. right < endpoint)
        if(dat(left) > dat(right)) then
           tmp_dat(j) = dat(right)
           right = right + 1
@@ -96,13 +100,13 @@ CONTAINS
        end if
     end do
 
-    do while(left < ind+bsize)
+    do while(left < center)
        tmp_dat(j) = dat(left)
        left = left + 1
        j = j + 1       
     end do
 
-    do while(right < ind+2*bsize)
+    do while(right < endpoint)
        tmp_dat(j) = dat(right)
        right = right + 1
        j = j + 1
@@ -110,8 +114,12 @@ CONTAINS
     
     j = 1
     ! write(*,*) "copy values"
-    do while(j <= 2*bsize .and. (ind + j - 1) <= size(dat))
-       dat(ind + j - 1) = tmp_dat(j)
+    if(endpoint == size(dat)+1) then
+       write(*,*) "bef wr"
+       write(*,*) ind, bsize, left, right, endpoint, size(dat)
+    end if
+    do while(j <= 2*bsize .and. (start + j - 1) <= size(dat))
+       dat(start + j - 1) = tmp_dat(j)
        j = j + 1
     end do
   end subroutine mymerge
