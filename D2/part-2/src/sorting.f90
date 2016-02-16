@@ -1,7 +1,7 @@
 MODULE sorting
   IMPLICIT NONE
   PRIVATE
-  PUBLIC :: simplesort, quicksort, bubblesort
+  PUBLIC :: simplesort, quicksort, bubblesort, insertionsort
 CONTAINS
   
   ! pathetically bad sorting algorithm:
@@ -26,7 +26,29 @@ CONTAINS
     END DO
   END SUBROUTINE simplesort
 
-  ! naive implementation of the bubblesort algorithm
+  ! implementation of the insertion sort algorithm
+  subroutine insertionsort(dat)
+    implicit none
+    real, dimension(:), intent(inout) :: dat
+    integer :: num, i, j
+    real :: tmp
+
+    num = size(dat, 1)
+    if (num < 2) return
+
+    do i=2,num
+       tmp = dat(i)
+       j = i - 1
+       do while(j >= 0 .and. tmp < dat(j))
+          dat(j+1) = dat(j)
+          j = j - 1
+       end do
+       dat(j+1) = tmp       
+    end do
+    
+  end subroutine insertionsort
+  
+  ! implementation of the bubblesort algorithm
   ! sorting is alwais by ascending values
   subroutine bubblesort(dat)
 
