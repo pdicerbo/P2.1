@@ -6,37 +6,40 @@ module list_tools
   logical, parameter :: descending = .false.
   logical, parameter :: bykey = .true.
   logical, parameter :: byvalue = .false.
-  public :: is_sorted, simplesort
+  public :: is_sorted, swap
   
   interface is_sorted
      module procedure is_sorted_int, is_sorted_real, is_sorted_pair
   end interface
-  
+
 contains
 
-  ! pathetically bad sorting algorithm:
-  ! loop over all unique pairs and swap the values
-  ! if the left element is larger than the right one.
-  SUBROUTINE simplesort(dat)
+  ! pick two randomly chosen elements in array 'dat'
+  ! and swap them. do this 'count' times.
+  SUBROUTINE swap(dat,count)
     IMPLICIT NONE
-    REAL,DIMENSION(:),INTENT(inout) :: dat
-    INTEGER :: num, i, j
+    REAL, DIMENSION(:),INTENT(inout) :: dat
+    INTEGER, INTENT(in) :: count
+    REAL,DIMENSION(2) :: rval
+    INTEGER :: i,num,i1,i2
     REAL :: tmp
     
     num = SIZE(dat,1)
-    IF (num < 2) RETURN
-    DO i=1,num-1
-       DO j=i+1,num
-          IF (dat(i) > dat(j)) THEN
-             tmp = dat(i)
-             dat(i) = dat(j)
-             dat(j) = tmp
-          END IF
-       END DO
+    DO i=1,count
+       ! pick two elements at random
+       CALL RANDOM_NUMBER(rval)
+       rval = rval*REAL(num)+0.5
+       i1 = INT(rval(1))
+       i2 = INT(rval(2))
+       ! paranoia check to avoid out-of-bounds access
+       IF ((i1 < 1) .OR. (i1 > num) .OR. (i2 < 1) .OR. (i2 > num)) CYCLE
+       ! swap the elements
+       tmp = dat(i1)
+       dat(i1) = dat(i2)
+       dat(i2) = tmp
     END DO
-  END SUBROUTINE simplesort
-
-  
+  END SUBROUTINE swap
+    
   integer function is_sorted_int(arr, sort_ord)
     integer, dimension(:) :: arr
     integer :: j, check = 0
