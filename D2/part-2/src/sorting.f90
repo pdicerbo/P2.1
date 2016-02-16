@@ -1,7 +1,7 @@
 MODULE sorting
   IMPLICIT NONE
   PRIVATE
-  PUBLIC :: simplesort, quicksort, bubblesort, insertionsort
+  PUBLIC :: simplesort, quicksort, bubblesort, insertionsort, mergesort
 CONTAINS
   
   ! pathetically bad sorting algorithm:
@@ -26,6 +26,96 @@ CONTAINS
     END DO
   END SUBROUTINE simplesort
 
+  subroutine mergesort(dat)
+    implicit none
+    real, dimension(:), intent(inout) :: dat
+    real :: tmp
+    integer :: num, block_size, j
+    logical :: first_cycle
+    
+    num = size(dat)
+    if (num < 2) return
+    write(*,*) "within mergesort() function"
+    if(mod(num, 2) .ne. 0) then
+       write(*,*) "lenght of the array must be even"
+       write(*,*) "return"
+       return
+    endif
+
+    block_size = 2
+    first_cycle = .true.
+
+    do while(block_size <= size(dat)/2)
+       if(block_size == 2 .and. first_cycle .eqv. .true.) then
+          j = 1
+          do while(j < num)
+             if(dat(j) > dat(j+1)) then
+                tmp = dat(j)
+                dat(j) = dat(j+1)
+                dat(j+1) = tmp
+             end if
+             j = j + 2
+          end do
+          first_cycle = .false.
+          write(*,*) "block_size = ", block_size
+          write(*,*) dat
+       else
+          j = 1
+          
+          do while(j < num)
+             if(dat(j+block_size-1) > dat(j+block_size)) call mymerge(dat, block_size, j)
+             write(*,*) "block_size = ", block_size, "j = ", j
+             write(*,*) dat
+             j = j + 2*block_size
+          end do
+          block_size = 2*block_size
+       end if
+    end do
+  end subroutine mergesort
+  
+  subroutine mymerge(dat, bsize, ind)
+    implicit none
+    real, dimension(:), intent(inout) :: dat
+    integer :: bsize, ind, left, right, j
+    real, dimension(2*bsize) :: tmp_dat
+    ! write(*,*) "within mymerge() function"
+    left = ind
+    right = ind + bsize
+    j = 1
+    
+    ! do while(j <= 2*bsize)
+    do while(left < ind+bsize .and. right < ind+2*bsize)
+       if(dat(left) > dat(right)) then
+          tmp_dat(j) = dat(right)
+          right = right + 1
+          j = j + 1
+       else
+          tmp_dat(j) = dat(left)
+          left = left + 1
+          j = j + 1
+       end if
+    end do
+
+    do while(left < ind+bsize)
+       tmp_dat(j) = dat(left)
+       left = left + 1
+       j = j + 1       
+    end do
+
+    do while(right < ind+2*bsize)
+       tmp_dat(j) = dat(right)
+       right = right + 1
+       j = j + 1
+    end do
+    
+    j = 1
+    ! write(*,*) "copy values"
+    do while(j <= 2*bsize .and. (ind + j - 1) <= size(dat))
+       dat(ind + j - 1) = tmp_dat(j)
+       j = j + 1
+    end do
+  end subroutine mymerge
+  
   ! implementation of the insertion sort algorithm
   subroutine insertionsort(dat)
     implicit none

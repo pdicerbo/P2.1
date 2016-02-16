@@ -1,6 +1,6 @@
 CC=gfortran
 FFLAGS=-Wall -pedantic -std=f2003 -O2
-SRC=09_simplesort.f90 10_bubblesort.f90 11_insertionsort.f90 12_quicksort.f90
+SRC=09_simplesort.f90 10_bubblesort.f90 11_insertionsort.f90 12_quicksort.f90 13_mergesort.f90
 OBJ=$(SRC:%.f90=%.o)
 EXEC=$(SRC:%.f90=../%.x)
 
