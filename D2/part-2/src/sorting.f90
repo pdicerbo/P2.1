@@ -58,7 +58,7 @@ CONTAINS
              ! if(dat(j+block_size-1) > dat(j+block_size)) call mymerge(dat, block_size, j)
              call mymerge(dat, block_size, j)
              j = j + 2*block_size
-             ! write(*,*)"mymerge loop with j = ",j,"bloc_size = ", block_size
+             write(*,*)"mymerge loop with j = ",j,"bloc_size = ", block_size
           end do
           block_size = 2*block_size
        end if
@@ -70,21 +70,25 @@ CONTAINS
     real, dimension(:), intent(inout) :: dat
     integer :: bsize, ind, left, right, j, start, endpoint, center
     real, dimension(2*bsize) :: tmp_dat
+
     start = ind
     center = ind + bsize
     left = start
     right = center
     endpoint = ind+2*bsize
     if(endpoint > size(dat)+1) then
-       write(*,*) "bef"
-       write(*,*) ind, bsize, left, right, endpoint, size(dat)
+       ! write(*,*) "bef"
+       ! write(*,*) ind, bsize, left, right, endpoint, size(dat)
        left = ind - bsize
        start = ind - bsize
        center = ind
        right = ind
        endpoint = size(dat)+1
-       write(*,*) "after"
-       write(*,*) ind, bsize, left, right, endpoint, size(dat)
+       ! write(*,*) "after"
+       ! write(*,*) dat
+       ! write(*,*) tmp_dat
+       write(*,*) ind, bsize, left, center, right, endpoint, size(dat)
+       ! write(*,*) dat
     end if
     j = 1
 
@@ -94,6 +98,7 @@ CONTAINS
           right = right + 1
           j = j + 1
        else
+          ! if(endpoint == size(dat)+1) write(*,*) j, dat(left), dat(right)
           tmp_dat(j) = dat(left)
           left = left + 1
           j = j + 1
@@ -114,14 +119,19 @@ CONTAINS
     
     j = 1
     ! write(*,*) "copy values"
-    if(endpoint == size(dat)+1) then
-       write(*,*) "bef wr"
-       write(*,*) ind, bsize, left, right, endpoint, size(dat)
-    end if
+    ! if(endpoint == size(dat)+1) then
+       ! write(*,*) "bef wr"
+       ! write(*,*) ind, bsize, left, right, endpoint, size(dat)
+       ! write(*,*) dat
+       ! write(*,*) tmp_dat
+    ! end if
     do while(j <= 2*bsize .and. (start + j - 1) <= size(dat))
+       ! if(endpoint == size(dat)+1) write(*,*) j, start+j-1, size(tmp_dat), bsize, tmp_dat(j), dat(start+j-1)
        dat(start + j - 1) = tmp_dat(j)
        j = j + 1
     end do
+    ! if(endpoint == size(dat)+1) write(*,*) "tmp_dat = ", tmp_dat
+    write(*,*) dat
   end subroutine mymerge
   
   ! implementation of the insertion sort algorithm

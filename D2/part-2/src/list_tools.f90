@@ -23,7 +23,6 @@ contains
     REAL,DIMENSION(2) :: rval
     INTEGER :: i,num,i1,i2
     REAL :: tmp
-    
     num = SIZE(dat,1)
     DO i=1,count
        ! pick two elements at random
