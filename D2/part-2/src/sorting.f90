@@ -26,16 +26,31 @@ CONTAINS
     END DO
   END SUBROUTINE simplesort
 
+  ! naive implementation of the bubblesort algorithm
+  ! sorting is alwais by ascending values
   subroutine bubblesort(dat)
 
     implicit none
     real, dimension(:), intent(inout) :: dat
-    integer :: num, j
+    integer :: num, i, nswap = 1
     real :: tmp
 
     num = size(dat, 1)
     if (num < 2) return
 
+    do while( nswap > 0 )
+       nswap = 0
+
+       do i=1,num-1
+          if(dat(i) > dat(i + 1)) then
+             tmp = dat(i)
+             dat(i) = dat(i+1)
+             dat(i+1) = tmp
+             nswap = nswap + 1
+          end if
+       end do
+    end do
+    
   end subroutine bubblesort
   
   ! quicksort implementation via recursion
