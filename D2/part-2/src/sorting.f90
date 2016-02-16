@@ -121,9 +121,9 @@ CONTAINS
     REAL :: tmp, pivot
     
     ! this is the classic choice of pivot element, assuming random data
-    pivot = dat(right)
+    ! pivot = dat(right)
     ! an element in the middle is a much better choice for presorted data
-    ! pivot = dat((left+right)/2)
+    pivot = dat((left+right)/2)
     i = left
     DO j=left,right-1
        IF (pivot > dat(j)) THEN
