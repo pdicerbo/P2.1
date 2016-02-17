@@ -1,6 +1,6 @@
 CC=gfortran
 FFLAGS=-Wall -pedantic -std=f2003 -O2
-SRC=test.f90
+SRC=17_array_lookup.f90 #test.f90
 OBJ=$(SRC:%.f90=%.o)
 EXEC=$(SRC:%.f90=../%.x)
 
@@ -24,7 +24,7 @@ sorting.o: sorting.f90
 # here you have to put the rules for produces the executables
 # with the correct object files you want to include
 
-../%.x: sorting.o list_tools.o %.o
+../%.x: sorting.o list_types.o %.o #tools.o %.o
 	$(CC) -o $@ $(FFLAGS) $^
 
 clean:

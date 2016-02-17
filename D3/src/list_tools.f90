@@ -140,7 +140,7 @@ contains
   end function is_sorted_real
   
   integer function is_sorted_pair(arr, sort_ord, k_v)
-    type (mytype), dimension(:) :: arr
+    type (pair), dimension(:) :: arr
     integer :: j, check = 0
     logical, optional :: sort_ord
     logical, optional :: k_v
