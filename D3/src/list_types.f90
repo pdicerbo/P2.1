@@ -10,17 +10,13 @@ module list_types
   type LinkedList
      type (pair) :: val
      type(LinkedList), pointer :: next => NULL()
-
+     
    contains
-
+     
      procedure :: add_ll
      procedure :: find_by_key
   end type LinkedList
-
-  ! interface LinkedList
-  !    module procedure find_by_key
-  ! end interface LinkedList
-
+  
 contains
   
   ! the initialization is done by simply adding
@@ -45,10 +41,8 @@ contains
   end subroutine add_ll
 
   type(pair) function find_by_key(self, mykey) result(pair_ret)
-  ! function find_by_key(self, key) result(pair_ret)
     class (LinkedList), intent(in), target :: self
     integer, intent(in) :: mykey
-    ! type (pair), intent(out) :: pair_ret
     type (LinkedList), pointer :: tmp
     
     tmp => self
