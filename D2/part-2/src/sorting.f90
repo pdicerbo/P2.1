@@ -2,8 +2,9 @@ MODULE sorting
   IMPLICIT NONE
   PRIVATE
   PUBLIC :: simplesort, quicksort, bubblesort, insertionsort, mergesort
+
 CONTAINS
-  
+
   ! pathetically bad sorting algorithm:
   ! loop over all unique pairs and swap the values
   ! if the left element is larger than the right one.
@@ -167,7 +168,7 @@ subroutine insertionsort(dat)
     CALL quicksort_recurse(dat,1,p-1)
     CALL quicksort_recurse(dat,p+1,num)
   END SUBROUTINE quicksort
-  
+
   RECURSIVE SUBROUTINE quicksort_recurse(dat,left,right)
     IMPLICIT NONE
     REAL,DIMENSION(:),INTENT(inout) :: dat
@@ -210,5 +211,5 @@ subroutine insertionsort(dat)
     dat(right) = dat(i)
     dat(i) = pivot
   END FUNCTION select_pivot
-  
+
 END MODULE sorting
