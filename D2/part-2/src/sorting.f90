@@ -26,42 +26,25 @@ CONTAINS
     END DO
   END SUBROUTINE simplesort
 
+  ! Implementation of mergesort algorithm
   subroutine mergesort(dat)
     implicit none
     real, dimension(:), intent(inout) :: dat
-    real :: tmp
     integer :: num, block_size, j
-    logical :: first_cycle
     
     num = size(dat)
     if (num < 2) return
 
-    block_size = 2
-    first_cycle = .true.
+    block_size = 1
 
-    do while(block_size <= size(dat)/2)
-       if(block_size == 2 .and. first_cycle .eqv. .true.) then
-          j = 1
-          do while(j < num)
-             if(dat(j) > dat(j+1)) then
-                tmp = dat(j)
-                dat(j) = dat(j+1)
-                dat(j+1) = tmp
-             end if
-             j = j + 2
-          end do
-          first_cycle = .false.
-       else
-          j = 1
-          
-          do while(j < num)
-             ! if(dat(j+block_size-1) > dat(j+block_size)) call mymerge(dat, block_size, j)
-             call mymerge(dat, block_size, j)
-             j = j + 2*block_size
-             ! write(*,*)"mymerge loop with j = ",j,"bloc_size = ", block_size
-          end do
-          block_size = 2*block_size
-       end if
+    do while(block_size <= size(dat) )
+       j = 1
+       
+       do while(j < num)
+          call mymerge(dat, block_size, j)
+          j = j + 2*block_size
+       end do
+       block_size = 2*block_size
     end do
   end subroutine mergesort
   
@@ -76,49 +59,49 @@ CONTAINS
     left = start
     right = center
     endpoint = ind+2*bsize
-    if(endpoint > size(dat)+1) then
-       left = ind - bsize
-       start = ind - bsize
-       center = ind
-       right = ind
+    if(endpoint > size(dat)+1)then
        endpoint = size(dat)+1
-    end if
-    j = 1
 
-    do while(left < center .and. right < endpoint)
-       if(dat(left) > dat(right)) then
-          tmp_dat(j) = dat(right)
-          right = right + 1
-          j = j + 1
-       else
+    endif
+    if(center <= size(dat)) then
+
+       j = 1
+
+       do while(left < center .and. right < endpoint)
+          if(dat(left) > dat(right)) then
+             tmp_dat(j) = dat(right)
+             right = right + 1
+             j = j + 1
+          else
+             tmp_dat(j) = dat(left)
+             left = left + 1
+             j = j + 1
+          end if
+       end do
+       
+       do while(left < center)
           tmp_dat(j) = dat(left)
           left = left + 1
-          j = j + 1
-       end if
-    end do
-
-    do while(left < center)
-       tmp_dat(j) = dat(left)
-       left = left + 1
-       j = j + 1       
-    end do
-
-    do while(right < endpoint)
-       tmp_dat(j) = dat(right)
+          j = j + 1       
+       end do
+       
+       do while(right < endpoint)
+          tmp_dat(j) = dat(right)
        right = right + 1
        j = j + 1
     end do
     
     j = 1
-    ! write(*,*) "copy values"
+
     do while(j <= 2*bsize .and. (start + j - 1) <= size(dat))
        dat(start + j - 1) = tmp_dat(j)
        j = j + 1
     end do
-  end subroutine mymerge
-  
-  ! implementation of the insertion sort algorithm
-  subroutine insertionsort(dat)
+ end if
+end subroutine mymerge
+
+! implementation of the insertion sort algorithm
+subroutine insertionsort(dat)
     implicit none
     real, dimension(:), intent(inout) :: dat
     integer :: num, i, j
