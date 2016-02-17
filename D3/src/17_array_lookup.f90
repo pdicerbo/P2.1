@@ -46,7 +46,8 @@ PROGRAM array_lookup
 
   CALL CPU_TIME(time1)
   DO i=1,nlook
-      ! XXX do linked list or hash table lookups here
+     ! XXX do linked list or hash table lookups here
+     p = List % find_by_key(idx(i))
   END DO
   CALL CPU_TIME(time2)
   WRITE(*,FMT=666) nlook, 'XXXX XXXX lookups', (time2-time1)*1000.0

@@ -12,22 +12,19 @@ module list_types
      type(LinkedList), pointer :: next => NULL()
 
    contains
-     procedure :: init_ll
+
      procedure :: add_ll
+     procedure :: find_by_key
   end type LinkedList
-  
+
+  ! interface LinkedList
+  !    module procedure find_by_key
+  ! end interface LinkedList
 
 contains
   
-  ! the initialization is done by assing
-  ! the first element of the list
-  subroutine init_ll(self, a)
-    class(LinkedList), intent(inout) :: self
-    type (pair), intent(in) :: a
-    self % val = a
-    allocate(self % next)
-  end subroutine init_ll
-
+  ! the initialization is done by simply adding
+  ! a new item in the list
   subroutine add_ll(self, a)
     class(LinkedList), intent(inout), target :: self
     type (pair), intent(in) :: a
@@ -46,5 +43,24 @@ contains
     tmp % next => new_cell
 
   end subroutine add_ll
+
+  type(pair) function find_by_key(self, mykey) result(pair_ret)
+  ! function find_by_key(self, key) result(pair_ret)
+    class (LinkedList), intent(in), target :: self
+    integer, intent(in) :: mykey
+    ! type (pair), intent(out) :: pair_ret
+    type (LinkedList), pointer :: tmp
+    
+    tmp => self
+
+    do while(mykey .ne. tmp % val % key)
+       tmp => tmp % next
+       if(.not. associated(tmp % next))then
+          write(*,*) "key ", mykey, "not found"
+          return
+       end if
+    end do
+    pair_ret = tmp % val
+  end function find_by_key
 
 end module list_types
