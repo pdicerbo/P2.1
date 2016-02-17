@@ -15,6 +15,7 @@ module list_types
      
      procedure :: add_ll
      procedure :: find_by_key
+     procedure :: free_all
   end type LinkedList
   
 contains
@@ -37,16 +38,16 @@ contains
     
     tmp % val = a
     tmp % next => new_cell
-
+    
   end subroutine add_ll
-
+  
   type(pair) function find_by_key(self, mykey) result(pair_ret)
     class (LinkedList), intent(in), target :: self
     integer, intent(in) :: mykey
     type (LinkedList), pointer :: tmp
     
     tmp => self
-
+    
     do while(mykey .ne. tmp % val % key)
        tmp => tmp % next
        if(.not. associated(tmp % next))then
@@ -57,4 +58,20 @@ contains
     pair_ret = tmp % val
   end function find_by_key
 
+  recursive subroutine free_all(self)
+    class (LinkedList), intent(inout), target :: self
+    type (LinkedList), pointer :: tmp
+    type (LinkedList), pointer :: sec_tmp
+    
+    tmp => self
+
+    if(associated(tmp % next)) then
+       sec_tmp => tmp % next
+       call sec_tmp % free_all()
+       deallocate(tmp % next)
+    else
+       return
+    end if
+  end subroutine free_all
+  
 end module list_types

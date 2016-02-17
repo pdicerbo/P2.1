@@ -54,5 +54,7 @@ PROGRAM array_lookup
 
   ! XXX free all allocated data
   DEALLOCATE(dat,idx)
+  call List % free_all()
+  deallocate(List)
 666 FORMAT (' Performing',I8,1X,A20,1X,'took:',F12.6,' ms')     
 END PROGRAM array_lookup
