@@ -8,7 +8,7 @@ module list_types
   end type pair
 
   type LinkedList
-     real :: val
+     type (pair) :: val
      type(LinkedList), pointer :: next => NULL()
 
    contains
@@ -23,33 +23,28 @@ contains
   ! the first element of the list
   subroutine init_ll(self, a)
     class(LinkedList), intent(inout) :: self
-    real, intent(in) :: a
+    type (pair), intent(in) :: a
     self % val = a
-    ! allocate(self % next)
+    allocate(self % next)
   end subroutine init_ll
 
   subroutine add_ll(self, a)
-    class(LinkedList), intent(inout) :: self
-    real, intent(in) :: a
+    class(LinkedList), intent(inout), target :: self
+    type (pair), intent(in) :: a
     type (LinkedList), pointer :: tmp
-
-    allocate(tmp)
-    tmp = self
+    type (LinkedList), pointer :: new_cell
     
-    do while (associated(tmp % next))
-       write(*,*) "im in", tmp%val
-       tmp => self % next
-       write(*,*) "im assigned pointer"
+    tmp => self
+    
+    do while ( associated(tmp % next))
+       tmp => tmp % next
     end do
-    
-    print*,"allocation"
-    allocate(tmp % next)
-    print*,"allocation done"
-    ! tmp % next % val = a
-    tmp  % val = a
-    print*,"new_item = ", tmp%val
 
-    deallocate(tmp)
+    allocate(new_cell)
+    
+    tmp % val = a
+    tmp % next => new_cell
+
   end subroutine add_ll
 
 end module list_types

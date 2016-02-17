@@ -18,15 +18,11 @@ PROGRAM array_lookup
   READ(5,*) chk
 
   ! XXX fill linked list or hash table with items from dat() here
+  
   allocate(List)
-  write(*,*) "allocation done"
-  call List % init_ll(42.)
-  ! call List % add_ll(42.)
-  write(*,*) "init list with ", List % val
-  call List % add_ll(3.14)
-  write(*,*) "add element ", List % val
-  call List % add_ll(6.28)
-  write(*,*) "add element ", List % val
+  do i=1,num
+     call List % add_ll(dat(i))
+  end do
   ! fill idx array with randomly selected keys
   CALL RANDOM_SEED()
   ALLOCATE(idx(nlook))
