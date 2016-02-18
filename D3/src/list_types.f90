@@ -33,21 +33,28 @@ module list_types
   end type HashTable
 
   type StackArray
+     private
      integer, allocatable, dimension(:) :: StackArr
      integer :: len
      integer :: index
 
    contains
 
-     procedure :: stack_init
+     ! procedure :: real_init !Stack_Init
      procedure :: push
      procedure :: check_boundary
      procedure :: pop
      procedure :: length
      procedure :: free_stack
+     procedure :: copy_constr
      
   end type StackArray
-  
+
+  interface Stack_Init
+     module procedure real_init
+     module procedure copy_constr
+  end interface Stack_Init
+
 contains
   ! trivial implementation of the function
   ! that return the next prime number greater than
@@ -198,9 +205,9 @@ contains
        call self % bucket(i) % free_all()
     end do
   end subroutine hash_free
-
-  subroutine stack_init(self, n)
-    class (StackArray), intent(inout) :: self
+  
+  type (StackArray) function real_init(n) result(self)
+    ! class (StackArray) :: self
     integer, intent(inout) :: n
 
     if(n < 1) then
@@ -213,8 +220,8 @@ contains
     self % len = n
     self % index = 1
 
-  end subroutine stack_init
-
+  end function real_init
+  
   subroutine push(self, n)
     class (StackArray), intent(inout) :: self
     integer, intent(in) :: n
@@ -267,5 +274,14 @@ contains
     deallocate(self % StackArr)
     
   end subroutine free_stack
-  
+
+  type (StackArray) function copy_constr(PrevStack) result(ret)
+    ! class (StackArray), intent(inout) :: self 
+    class (StackArray), intent(inout) :: PrevStack
+
+    ret % len = PrevStack % len
+    ret % index = PrevStack % index
+    allocate(ret % StackArr(ret % len))
+    
+  end function copy_constr
 end module list_types
