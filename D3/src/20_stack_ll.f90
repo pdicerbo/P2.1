@@ -3,7 +3,7 @@ PROGRAM stack_integer
 
   type (StackList), pointer :: FirstStack
   type (StackList), pointer :: SecondStack
-  integer :: dlen, i, stack_len
+  integer :: dlen, i, stack_len, counter
   type (pair), allocatable, dimension(:) :: dat
   real :: checksum
   
@@ -16,19 +16,25 @@ PROGRAM stack_integer
   allocate(SecondStack)
 
   stack_len = 40
-  
+  counter = 0
   FirstStack = Stack_Init()
 
   do i=1,dlen/2
      call FirstStack % push_ll(dat(i))
+     counter = counter + 1
   end do
-  print*, FirstStack % get_length(), dlen/2
+  print*, FirstStack % get_length(), dlen/2, counter
 
   SecondStack = Stack_Init(FirstStack)
   do i=dlen/2, dlen
      call SecondStack % push_ll(dat(i))
+     counter = counter + 1
   end do
-  print*, SecondStack % get_length(), dlen
+  ! do i=1,dlen/2
+  !    call SecondStack % push_ll(dat(i))
+  !    counter = counter + 1
+  ! end do
+  print*, SecondStack % get_length(), dlen, counter
 
   ! clean StackArrays
 
