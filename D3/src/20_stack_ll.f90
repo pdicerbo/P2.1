@@ -26,7 +26,7 @@ PROGRAM stack_integer
   print*, FirstStack % get_length(), dlen/2, counter
 
   SecondStack = Stack_Init(FirstStack)
-  do i=dlen/2, dlen
+  do i=dlen/2+1, dlen
      call SecondStack % push_ll(dat(i))
      counter = counter + 1
   end do
