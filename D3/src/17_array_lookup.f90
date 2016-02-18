@@ -50,7 +50,7 @@ PROGRAM array_lookup
      p = List % find_by_key(idx(i))
   END DO
   CALL CPU_TIME(time2)
-  WRITE(*,FMT=666) nlook, 'XXXX XXXX lookups', (time2-time1)*1000.0
+  WRITE(*,FMT=666) nlook, 'Linked List lookups', (time2-time1)*1000.0
 
   ! XXX free all allocated data
   DEALLOCATE(dat,idx)
