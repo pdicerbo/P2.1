@@ -5,6 +5,7 @@ PROGRAM stack_integer
   type (StackList), pointer :: SecondStack
   integer :: dlen, i, stack_len, counter
   type (pair), allocatable, dimension(:) :: dat
+  type (pair) :: tmp
   real :: checksum
   
   read(5,*) dlen
@@ -30,28 +31,23 @@ PROGRAM stack_integer
      call SecondStack % push_ll(dat(i))
      counter = counter + 1
   end do
-  ! do i=1,dlen/2
-  !    call SecondStack % push_ll(dat(i))
-  !    counter = counter + 1
-  ! end do
+  
   print*, SecondStack % get_length(), dlen, counter
 
   ! clean StackArrays
 
-  ! stack_len = FirstStack % length()
-  ! do i=1, stack_len
-  !    dlen = FirstStack % pop()
-  ! end do
-  ! print*,FirstStack % length()
+  stack_len = FirstStack % get_length()
+  do i=1, stack_len
+     tmp = FirstStack % pop_ll()
+  end do
+  print*,"The lenght now is ",FirstStack % get_length()
   
-  ! stack_len = SecondStack % length()
-  ! do i=1, stack_len
-  !    dlen = SecondStack % pop()
-  ! end do
-  ! print*,SecondStack % length()
+  stack_len = SecondStack % get_length()
+  do i=1, stack_len
+     tmp = SecondStack % pop_ll()
+  end do
+  print*,"The lenght now is ", SecondStack % get_length()
 
-  ! call FirstStack % free_stack()
-  ! call SecondStack % free_stack()
   call FirstStack % free_stack_ll()
   deallocate(FirstStack)
   call SecondStack % free_stack_ll()

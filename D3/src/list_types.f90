@@ -58,7 +58,7 @@ module list_types
 
      procedure :: push_ll
      procedure :: get_length
-     
+     procedure :: pop_ll
      procedure :: free_stack_ll
      
   end type StackList
@@ -123,7 +123,7 @@ contains
     
     tmp => self
     
-    do while ( associated(tmp % next))
+    do while (associated(tmp % next))
        tmp => tmp % next
     end do
 
@@ -351,5 +351,32 @@ contains
     deallocate(self % StackLL)
     
   end subroutine free_stack_ll
+
+  type (pair) function  pop_ll(self) result(ret)
+    class (StackList), intent(inout) :: self
+    type (LinkedList), pointer :: first
+    type (LinkedList), pointer :: sec
+
+    first => self % StackLL
+
+    if(.not. associated(first % next)) then
+       print*,"There isn't element to pop"
+       print*,"exit"
+       ret % key = 0
+       ret % val = 0.
+       return
+    end if
+    sec => first % next
+
+    do while(associated(sec % next))
+       first => first % next
+       sec => sec % next
+    end do
+    
+    deallocate(first % next)
+
+    self % len = self % len - 1
+    
+  end function pop_ll
   
 end module list_types
