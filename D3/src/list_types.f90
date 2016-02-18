@@ -26,6 +26,8 @@ module list_types
      procedure :: hash_init
      procedure :: hash_func
      procedure :: add_hash
+     procedure :: hash_find
+     procedure :: hash_free
   end type HashTable
   
 contains
@@ -157,9 +159,26 @@ contains
     integer :: index
 
     index = self % hash_func(p % key)
-    ! print*,index
-    call self % buckets(index) % add_ll(p)
-    
+
+    call self % buckets(index) % add_ll(p)    
   end subroutine add_hash
+
+  type (pair) function hash_find(self, mykey) result(FindPair)
+    class (HashTable), intent(in) :: self
+    integer, intent(in) :: mykey
+    integer :: index
+
+    index = self % hash_func(mykey)
+    FindPair = self % buckets(index) % find_by_key(mykey)
+  end function hash_find
+
+  subroutine hash_free(self)
+    class (HashTable), intent(inout) :: self
+    integer :: i
+    
+    do i=1,self % nbuckets
+       call self % buckets(i) % free_all()
+    end do
+  end subroutine hash_free
   
 end module list_types

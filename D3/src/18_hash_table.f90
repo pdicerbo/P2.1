@@ -10,7 +10,7 @@ PROGRAM array_lookup
   TYPE(pair),ALLOCATABLE,DIMENSION(:) :: dat
   TYPE(pair) :: p
   INTEGER, PARAMETER :: nlook = 5000
-  type (HashTable) :: HT
+  type (HashTable), pointer :: HT
   
   READ(5,*) num
   ALLOCATE(dat(num))
@@ -18,10 +18,11 @@ PROGRAM array_lookup
   READ(5,*) chk
 
   ! XXX fill linked list or hash table with items from dat() here
-  call HT % hash_init(5)
-  call HT % buckets(1) % add_ll(dat(1))
-  call HT % buckets(2) % add_ll(dat(2))
-  call HT % add_hash(dat(5))
+  allocate(HT)
+  call HT % hash_init(150)
+  do i=1,num
+     call HT % add_hash(dat(i))
+  end do
   ! fill idx array with randomly selected keys
   CALL RANDOM_SEED()
   ALLOCATE(idx(nlook))
@@ -45,12 +46,15 @@ PROGRAM array_lookup
 
   CALL CPU_TIME(time1)
   DO i=1,nlook
-      ! XXX do linked list or hash table lookups here
+     ! XXX do linked list or hash table lookups here
+     p = HT % hash_find(idx(i))
   END DO
   CALL CPU_TIME(time2)
   WRITE(*,FMT=666) nlook, 'XXXX XXXX lookups', (time2-time1)*1000.0
 
   ! XXX free all allocated data
   DEALLOCATE(dat,idx)
+  call HT % hash_free()
+  deallocate(HT)
 666 FORMAT (' Performing',I8,1X,A20,1X,'took:',F12.6,' ms')     
 END PROGRAM array_lookup
