@@ -40,7 +40,6 @@ module list_types
 
    contains
 
-     ! procedure :: real_init !Stack_Init
      procedure :: push
      procedure :: check_boundary
      procedure :: pop
@@ -207,7 +206,6 @@ contains
   end subroutine hash_free
   
   type (StackArray) function real_init(n) result(self)
-    ! class (StackArray) :: self
     integer, intent(inout) :: n
 
     if(n < 1) then

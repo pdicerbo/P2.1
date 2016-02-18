@@ -23,5 +23,7 @@ PROGRAM stack_integer
   
   call MyStack % free_stack()
   deallocate(MyStack)
+  call MyNewStack % free_stack()
+  deallocate(MyNewStack)
   
 END PROGRAM stack_integer
