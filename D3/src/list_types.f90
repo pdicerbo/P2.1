@@ -239,7 +239,7 @@ contains
     integer :: j
     
     if(self % index > self % len) then
-
+       
        allocate(tmp(self % len + 10))
 
        do j=1, self % len
@@ -252,23 +252,25 @@ contains
     endif
   end subroutine check_boundary
 
-  integer function pop(self) result(this)
+  integer function pop(self) result(th)
     class (StackArray), intent(inout) :: self
 
     if(self % index .le. 1) then
        print*,self % index
        print*,"There isn't element to pop"
        print*,"exit"
-       this = 0
+       th = 0
        return
     end if
-    this = self % StackArr(self % index)
+
     self % index = self % index - 1
+    th = self % StackArr(self % index)
   end function pop
   
   integer function length(self) result(l)
     class (StackArray), intent(in) :: self
-    l = self % index
+    ! number of items within the StackArray
+    l = self % index - 1
   end function length
   
   subroutine free_stack(self)
