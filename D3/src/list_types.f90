@@ -17,8 +17,59 @@ module list_types
      procedure :: find_by_key
      procedure :: free_all
   end type LinkedList
+
+  type HashTable
+     type (LinkedList), allocatable, dimension(:) :: buckets
+     integer :: nbuckets
+     
+   contains
+     procedure :: hash_init
+     procedure :: hash_func
+     procedure :: add_hash
+  end type HashTable
   
 contains
+  ! trivial implementation of the function
+  ! that return the next prime number greater than
+  ! the given argument n
+  integer function next_prime(n)
+    integer :: n, count, nprime
+    logical :: is_prime
+
+    if(n == 1) then
+       next_prime = 2
+    else
+       
+       ! count = 2
+       nprime = n + 1
+       
+       do
+          is_prime = .true.
+
+          if(mod(nprime, 2) == 0) then
+             do count=2,n
+                if(mod(nprime, count) == 0)then
+                   is_prime = .false.
+                end if
+             end do
+          else
+             do count=3,n,2
+                if(mod(nprime, count) == 0)then
+                   is_prime = .false.
+                end if
+             end do
+          end if
+          
+          if(is_prime .eqv. .true.) then
+             exit
+          else
+             nprime = nprime + 1
+          end if
+       end do
+       next_prime = nprime
+    endif
+  end function next_prime
+
   
   ! the initialization is done by simply adding
   ! a new item in the list
@@ -73,5 +124,42 @@ contains
        return
     end if
   end subroutine free_all
+
+  subroutine hash_init(self, n)
+    class (HashTable), intent(inout) :: self
+    integer, intent(in) :: n
+    integer :: bucknum
+
+    bucknum = next_prime(n)
+    
+    if(bucknum < 150) then
+       print*, "the initialization value produces a number"
+       print*, "of buckets to initialize equal to n = ", bucknum
+       print*, "you should use at least n = 150"
+       print*, "however I initialize your hash table.."
+    end if
+    
+    self % nbuckets = bucknum
+    allocate(self % buckets(bucknum))
+    
+  end subroutine hash_init
+
+  integer function hash_func(self, mykey) result(hash)
+    class (HashTable), intent(in) :: self
+    integer, intent(in) :: mykey
+
+    hash = mod(mykey, self % nbuckets) + 1
+  end function hash_func
+
+  subroutine add_hash(self, p)
+    class (HashTable), intent(inout) :: self
+    type (pair), intent(in) :: p
+    integer :: index
+
+    index = self % hash_func(p % key)
+    ! print*,index
+    call self % buckets(index) % add_ll(p)
+    
+  end subroutine add_hash
   
 end module list_types

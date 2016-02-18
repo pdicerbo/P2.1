@@ -6,53 +6,13 @@ module list_tools
   logical, parameter :: descending = .false.
   logical, parameter :: bykey = .true.
   logical, parameter :: byvalue = .false.
-  public :: is_sorted, swap, next_prime
+  public :: is_sorted, swap
   
   interface is_sorted
      module procedure is_sorted_int, is_sorted_real, is_sorted_pair
   end interface
 
 contains
-  ! trivial implementation of the function
-  ! that return the next prime number greater than
-  ! the given argument n
-  integer function next_prime(n)
-    integer :: n, count, nprime
-    logical :: is_prime
-
-    if(n == 1) then
-       next_prime = 2
-    else
-       
-       ! count = 2
-       nprime = n + 1
-       
-       do
-          is_prime = .true.
-
-          if(mod(nprime, 2) == 0) then
-             do count=2,n
-                if(mod(nprime, count) == 0)then
-                   is_prime = .false.
-                end if
-             end do
-          else
-             do count=3,n,2
-                if(mod(nprime, count) == 0)then
-                   is_prime = .false.
-                end if
-             end do
-          end if
-          
-          if(is_prime .eqv. .true.) then
-             exit
-          else
-             nprime = nprime + 1
-          end if
-       end do
-       next_prime = nprime
-    endif
-  end function next_prime
   
   ! pick two randomly chosen elements in array 'dat'
   ! and swap them. do this 'count' times.
