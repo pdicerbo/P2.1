@@ -35,7 +35,6 @@ PROGRAM stack_integer
   print*, SecondStack % get_length(), dlen, counter
 
   ! clean StackArrays
-
   stack_len = FirstStack % get_length()
   do i=1, stack_len
      tmp = FirstStack % pop_ll()
@@ -52,7 +51,6 @@ PROGRAM stack_integer
   deallocate(FirstStack)
   call SecondStack % free_stack_ll()
   deallocate(SecondStack)
-  ! deallocate(SecondStack)
   deallocate(dat)
   
 END PROGRAM stack_integer
