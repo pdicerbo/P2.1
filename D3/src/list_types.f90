@@ -208,15 +208,17 @@ contains
   type (StackArray) function real_init(n) result(self)
     integer, intent(inout) :: n
 
-    if(n < 1) then
-       write(*,*) "n must be at least 1"
-       write(*,*) "exit"
-       return
-    end if
+    ! if(n < 1) then
+    !    write(*,*) "n must be at least 1"
+    !    write(*,*) "exit"
+    !    self % len = 0
+    !    self % index = 0
+    !    return
+    ! end if
 
-    allocate(self % StackArr(n))
     self % len = n
     self % index = 1
+    allocate(self % StackArr(n))
 
   end function real_init
   
@@ -250,20 +252,23 @@ contains
     endif
   end subroutine check_boundary
 
-  subroutine pop(self)
+  integer function pop(self) result(this)
     class (StackArray), intent(inout) :: self
 
     if(self % index .le. 1) then
+       print*,self % index
        print*,"There isn't element to pop"
        print*,"exit"
+       this = 0
        return
     end if
+    this = self % StackArr(self % index)
     self % index = self % index - 1
-  end subroutine pop
-
+  end function pop
+  
   integer function length(self) result(l)
     class (StackArray), intent(in) :: self
-    l = self % len
+    l = self % index
   end function length
   
   subroutine free_stack(self)
@@ -274,12 +279,16 @@ contains
   end subroutine free_stack
 
   type (StackArray) function copy_constr(PrevStack) result(ret)
-    ! class (StackArray), intent(inout) :: self 
     class (StackArray), intent(inout) :: PrevStack
-
+    integer :: j
+    
     ret % len = PrevStack % len
     ret % index = PrevStack % index
     allocate(ret % StackArr(ret % len))
+
+    do j=1, ret%len
+       ret % StackArr(j) = PrevStack % StackArr(j)
+    end do
     
   end function copy_constr
 end module list_types
