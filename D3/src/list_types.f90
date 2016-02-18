@@ -16,6 +16,7 @@ module list_types
      procedure :: add_ll
      procedure :: find_by_key
      procedure :: free_all
+     
   end type LinkedList
 
   type HashTable
@@ -28,7 +29,24 @@ module list_types
      procedure :: add_hash
      procedure :: hash_find
      procedure :: hash_free
+     
   end type HashTable
+
+  type StackArray
+     integer, allocatable, dimension(:) :: StackArr
+     integer :: len
+     integer :: index
+
+   contains
+
+     procedure :: stack_init
+     procedure :: push
+     procedure :: check_boundary
+     procedure :: pop
+     procedure :: length
+     procedure :: free_stack
+     
+  end type StackArray
   
 contains
   ! trivial implementation of the function
@@ -180,5 +198,74 @@ contains
        call self % bucket(i) % free_all()
     end do
   end subroutine hash_free
+
+  subroutine stack_init(self, n)
+    class (StackArray), intent(inout) :: self
+    integer, intent(inout) :: n
+
+    if(n < 1) then
+       write(*,*) "n must be at least 1"
+       write(*,*) "exit"
+       return
+    end if
+
+    allocate(self % StackArr(n))
+    self % len = n
+    self % index = 1
+
+  end subroutine stack_init
+
+  subroutine push(self, n)
+    class (StackArray), intent(inout) :: self
+    integer, intent(in) :: n
+
+    call self % check_boundary()
+
+    self % StackArr(self % index) = n
+    self % index = self % index + 1
+    
+  end subroutine push
+
+  subroutine check_boundary(self)
+    class (StackArray), intent(inout) :: self
+    integer, allocatable, dimension(:) :: tmp
+    integer :: j
+    
+    if(self % index > self % len) then
+
+       allocate(tmp(self % len + 10))
+
+       do j=1, self % len
+          tmp(j) = self % StackArr(j)
+       end do
+
+       deallocate(self % StackArr)
+       self % StackArr = tmp
+       self % len = self % len + 10       
+    endif
+  end subroutine check_boundary
+
+  subroutine pop(self)
+    class (StackArray), intent(inout) :: self
+
+    if(self % index .le. 1) then
+       print*,"There isn't element to pop"
+       print*,"exit"
+       return
+    end if
+    self % index = self % index - 1
+  end subroutine pop
+
+  integer function length(self) result(l)
+    class (StackArray), intent(in) :: self
+    l = self % len
+  end function length
+  
+  subroutine free_stack(self)
+    class (StackArray), intent(inout) :: self
+
+    deallocate(self % StackArr)
+    
+  end subroutine free_stack
   
 end module list_types
