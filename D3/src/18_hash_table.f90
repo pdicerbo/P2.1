@@ -50,7 +50,7 @@ PROGRAM array_lookup
      p = HT % hash_find(idx(i))
   END DO
   CALL CPU_TIME(time2)
-  WRITE(*,FMT=666) nlook, 'XXXX XXXX lookups', (time2-time1)*1000.0
+  WRITE(*,FMT=666) nlook, 'Hash Table lookups', (time2-time1)*1000.0
 
   ! XXX free all allocated data
   DEALLOCATE(dat,idx)

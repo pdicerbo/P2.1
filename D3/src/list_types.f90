@@ -19,7 +19,7 @@ module list_types
   end type LinkedList
 
   type HashTable
-     type (LinkedList), allocatable, dimension(:) :: buckets
+     type (LinkedList), allocatable, dimension(:) :: bucket
      integer :: nbuckets
      
    contains
@@ -142,7 +142,7 @@ contains
     end if
     
     self % nbuckets = bucknum
-    allocate(self % buckets(bucknum))
+    allocate(self % bucket(bucknum))
     
   end subroutine hash_init
 
@@ -160,7 +160,7 @@ contains
 
     index = self % hash_func(p % key)
 
-    call self % buckets(index) % add_ll(p)    
+    call self % bucket(index) % add_ll(p)    
   end subroutine add_hash
 
   type (pair) function hash_find(self, mykey) result(FindPair)
@@ -169,7 +169,7 @@ contains
     integer :: index
 
     index = self % hash_func(mykey)
-    FindPair = self % buckets(index) % find_by_key(mykey)
+    FindPair = self % bucket(index) % find_by_key(mykey)
   end function hash_find
 
   subroutine hash_free(self)
@@ -177,7 +177,7 @@ contains
     integer :: i
     
     do i=1,self % nbuckets
-       call self % buckets(i) % free_all()
+       call self % bucket(i) % free_all()
     end do
   end subroutine hash_free
   
