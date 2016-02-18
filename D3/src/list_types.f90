@@ -16,6 +16,7 @@ module list_types
      procedure :: add_ll
      procedure :: find_by_key
      procedure :: free_all
+     
   end type LinkedList
 
   type HashTable
@@ -28,8 +29,31 @@ module list_types
      procedure :: add_hash
      procedure :: hash_find
      procedure :: hash_free
+     
   end type HashTable
-  
+
+  type StackArray
+     private
+     integer, allocatable, dimension(:) :: StackArr
+     integer :: len
+     integer :: index
+
+   contains
+
+     procedure :: push
+     procedure :: check_boundary
+     procedure :: pop
+     procedure :: length
+     procedure :: free_stack
+     procedure :: copy_constr
+     
+  end type StackArray
+
+  interface Stack_Init
+     module procedure real_init
+     module procedure copy_constr
+  end interface Stack_Init
+
 contains
   ! trivial implementation of the function
   ! that return the next prime number greater than
@@ -181,4 +205,90 @@ contains
     end do
   end subroutine hash_free
   
+  type (StackArray) function real_init(n) result(self)
+    integer, intent(inout) :: n
+
+    ! if(n < 1) then
+    !    write(*,*) "n must be at least 1"
+    !    write(*,*) "exit"
+    !    self % len = 0
+    !    self % index = 0
+    !    return
+    ! end if
+
+    self % len = n
+    self % index = 1
+    allocate(self % StackArr(n))
+
+  end function real_init
+  
+  subroutine push(self, n)
+    class (StackArray), intent(inout) :: self
+    integer, intent(in) :: n
+
+    call self % check_boundary()
+
+    self % StackArr(self % index) = n
+    self % index = self % index + 1
+    
+  end subroutine push
+
+  subroutine check_boundary(self)
+    class (StackArray), intent(inout) :: self
+    integer, allocatable, dimension(:) :: tmp
+    integer :: j
+    
+    if(self % index > self % len) then
+
+       allocate(tmp(self % len + 10))
+
+       do j=1, self % len
+          tmp(j) = self % StackArr(j)
+       end do
+
+       deallocate(self % StackArr)
+       self % StackArr = tmp
+       self % len = self % len + 10       
+    endif
+  end subroutine check_boundary
+
+  integer function pop(self) result(this)
+    class (StackArray), intent(inout) :: self
+
+    if(self % index .le. 1) then
+       print*,self % index
+       print*,"There isn't element to pop"
+       print*,"exit"
+       this = 0
+       return
+    end if
+    this = self % StackArr(self % index)
+    self % index = self % index - 1
+  end function pop
+  
+  integer function length(self) result(l)
+    class (StackArray), intent(in) :: self
+    l = self % index
+  end function length
+  
+  subroutine free_stack(self)
+    class (StackArray), intent(inout) :: self
+
+    deallocate(self % StackArr)
+    
+  end subroutine free_stack
+
+  type (StackArray) function copy_constr(PrevStack) result(ret)
+    class (StackArray), intent(inout) :: PrevStack
+    integer :: j
+    
+    ret % len = PrevStack % len
+    ret % index = PrevStack % index
+    allocate(ret % StackArr(ret % len))
+
+    do j=1, ret%len
+       ret % StackArr(j) = PrevStack % StackArr(j)
+    end do
+    
+  end function copy_constr
 end module list_types
