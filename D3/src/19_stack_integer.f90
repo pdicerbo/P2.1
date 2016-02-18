@@ -2,7 +2,7 @@ PROGRAM stack_integer
   use list_types
 
   type (StackArray), pointer :: FirstStack
-  type (StackArray), pointer :: SecondStack => NULL()
+  type (StackArray), pointer :: SecondStack
   integer :: dlen, i, checksum, stack_len
   integer, allocatable, dimension(:) :: dat
   

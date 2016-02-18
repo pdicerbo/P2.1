@@ -49,11 +49,27 @@ module list_types
      
   end type StackArray
 
+  type StackList
+     private
+     type (LinkedList), pointer :: StackLL => NULL()
+     integer :: len
+
+   contains
+
+     procedure :: push_ll
+     procedure :: get_length
+     
+     procedure :: free_stack_ll
+     
+  end type StackList
+  
   interface Stack_Init
      module procedure real_init
      module procedure copy_constr
+     module procedure init_stack_ll
+     module procedure copy_constr_ll
   end interface Stack_Init
-
+  
 contains
   ! trivial implementation of the function
   ! that return the next prime number greater than
@@ -281,7 +297,7 @@ contains
   end subroutine free_stack
 
   type (StackArray) function copy_constr(PrevStack) result(ret)
-    class (StackArray), intent(inout) :: PrevStack
+    class (StackArray), intent(in) :: PrevStack
     integer :: j
     
     ret % len = PrevStack % len
@@ -293,4 +309,47 @@ contains
     end do
     
   end function copy_constr
+
+  type (StackList) function init_stack_ll() result(ret)
+    ret % len = 0
+    allocate(ret % StackLL)
+  end function init_stack_ll
+
+  subroutine push_ll(self, n)
+    class (StackList), intent(inout) :: self
+    type (pair), intent(in) :: n
+
+    call self % StackLL % add_ll(n)
+    self % len = self % len + 1
+  end subroutine push_ll
+
+  integer function get_length(self) result(ret)
+    class (StackList), intent(in) :: self
+
+    ret = self % len
+    
+  end function get_length
+
+  type (StackList) function copy_constr_ll(Prev) result(ret)
+    type (StackList), intent(in) :: Prev
+    type (LinkedList), pointer :: tmp
+
+    ret % len = Prev % get_length()
+    allocate(ret % StackLL)
+
+    tmp => Prev % StackLL
+    do while(associated(tmp % next))
+       call ret % StackLL % add_ll(tmp % val)
+       tmp => tmp % next
+    end do
+  end function copy_constr_ll
+
+  subroutine free_stack_ll(self)
+    class (StackList), intent(inout) :: self
+
+    call self % StackLL % free_all()
+    deallocate(self % StackLL)
+    
+  end subroutine free_stack_ll
+  
 end module list_types
