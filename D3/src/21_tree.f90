@@ -1,12 +1,13 @@
 PROGRAM MyFirstTree
   use list_types
 
-  type (pair) :: pair_init
+  type (pair) :: pair_init, findpair
   type (tree), pointer :: MyTree
-
+  integer :: key_to_find
+  
   allocate(MyTree)
 
-  pair_init % key = 1
+  pair_init % key = 4
   pair_init % val = 20.
   print*,"Tree init"
   MyTree = tree_init(pair_init)
@@ -30,7 +31,7 @@ PROGRAM MyFirstTree
   call MyTree % add_tree(pair_init)
   print*,"now NNodes = ", MyTree % get_nodes()
   
-  pair_init % key = 4
+  pair_init % key = 1
   pair_init % val = 17.
   print*,""
   print*,"add val = ", pair_init % val
@@ -50,6 +51,12 @@ PROGRAM MyFirstTree
   print*,"add val = ", pair_init % val
   call MyTree % add_tree(pair_init)
   print*,"now NNodes = ", MyTree % get_nodes()
+
+  key_to_find = 5
+  findpair = MyTree % find_in_tree(key_to_find) 
+
+  print*,"find key = ", key_to_find
+  print*,"key found =", findpair % key,"val = ", findpair % val 
 
   call MyTree % free_tree()
   deallocate(MyTree)

@@ -78,6 +78,7 @@ module list_types
    contains
      procedure :: add_node
      procedure :: free_all_nodes
+     procedure :: find_in_nodes
   end type node
 
   type tree
@@ -89,6 +90,7 @@ module list_types
      procedure :: add_tree
      procedure :: free_tree
      procedure :: get_nodes
+     procedure :: find_in_tree
   end type tree
 
   
@@ -424,7 +426,7 @@ contains
   recursive subroutine add_node(self, n)
     class (node), intent (inout) :: self
     type (pair), intent(in) :: n
-    type (node), pointer :: new_node
+    type (node), pointer :: new_node => NULL()
     
     if(self % value % key > n % key) then
        if(associated(self % left)) then
@@ -472,9 +474,49 @@ contains
   end subroutine free_all_nodes
 
   integer function get_nodes(self) result(NNodes)
+
     class (tree), intent(in) :: self
 
     NNodes = self % n_nodes
+    
   end function get_nodes
+
+  type (pair) function find_in_tree(self, MyKey) result(ret)
+    class (tree), intent(in) :: self
+    integer, intent(in) :: MyKey
+
+    ret = self % root % find_in_nodes(MyKey)
+    
+  end function find_in_tree
+
+  type (pair) recursive function find_in_nodes(self, n) result(ret)
+    class (node), intent(in) :: self
+    integer, intent(in) :: n
+
+    if(n == self % value % key) then
+       ret % val = self % value % val
+       ret % key = self % value % key
+
+    else if(n < self % value % key) then
+       if(associated(self % left)) then
+          ret = self % left % find_in_nodes(n)
+       else
+          print*,"key = ", n, " not found"
+          print*,"return ''0''"
+          ret % key = 0
+          ret % val = 0.
+       end if
+    else
+       if(associated(self % right)) then
+          ret = self % right % find_in_nodes(n)
+       else
+          print*,"key = ", n, " not found"
+          print*,"return ''0''"
+          ret % key = 0
+          ret % val = 0.
+       end if
+    end if
+    
+  end function find_in_nodes
   
 end module list_types
