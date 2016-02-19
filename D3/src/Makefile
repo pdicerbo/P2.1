@@ -1,6 +1,6 @@
 CC=gfortran
 FFLAGS=-Wall -pedantic -std=f2003 -O2 #-fbounds-check
-SRC=17_array_lookup.f90 18_hash_table.f90 19_stack_integer.f90 20_stack_ll.f90 21_tree.f90
+SRC=17_array_lookup.f90 18_hash_table.f90 19_stack_integer.f90 20_stack_ll.f90 21_tree.f90 22_main.f90
 OBJ=$(SRC:%.f90=%.o)
 EXEC=$(SRC:%.f90=../%.x)
 
@@ -21,7 +21,7 @@ list_tools.o: list_tools.f90 list_types.o
 # here you have to put the rules for produces the executables
 # with the correct object files you want to include
 
-../%.x: sorting.o list_types.o MyTree.o %.o #tools.o %.o
+../%.x: sorting.o list_types.o MyTree.o %.o
 	$(CC) -o $@ $(FFLAGS) $^
 
 clean:

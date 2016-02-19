@@ -60,27 +60,35 @@ contains
     
     if(self % value % key > n % key) then
        if(associated(self % left)) then
-          print*,"go to LEFT"
+
+          ! print*,"go to LEFT"
           call self % left % add_node(n)
+          
        else
-          print*,"new left allocation for value = ", n % val, " key = ", n % key
+
+          ! print*,"new left allocation for value = ", n % val, " key = ", n % key
           allocate(new_node)
           new_node % value = n
           new_node % NodeDepth = self % NodeDepth + 1
-          print*,"for key = ", n % key,", depth is", new_node % NodeDepth
+          ! print*,"for key = ", n % key,", depth is", new_node % NodeDepth
           self % left => new_node
+          
        end if
     else
        if(associated(self % right)) then
-          print*,"go to the RIGHT"
+
+          ! print*,"go to the RIGHT"
           call self % right % add_node(n)
+          
        else
-          print*,"new right allocation for value = ", n % val, " key = ", n % key
+
+          ! print*,"new right allocation for value = ", n % val, " key = ", n % key
           allocate(new_node)
           new_node % value = n
           new_node % NodeDepth = self % NodeDepth + 1
-          print*,"for key = ", n % key,", depth is", new_node % NodeDepth
+          ! print*,"for key = ", n % key,", depth is", new_node % NodeDepth
           self % right => new_node
+          
        end if
     end if
   end subroutine add_node
@@ -208,7 +216,6 @@ contains
        call self % right % leafs_enum(nl)
 
        if(.not. associated(self % left)) then
-          print*,"IM IN (.not. left), key = ", self % value % key, "; nl = ", nl
           nl = nl + 1
        end if
        
