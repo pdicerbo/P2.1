@@ -39,7 +39,7 @@ contains
     type (pair), intent(in) :: n
     
     new_tree % root % value = n
-    new_tree % root % NodeDepth = 1 ! "minimum" depth = 1
+    new_tree % root % NodeDepth = 1
     new_tree % n_nodes = 1
     
   end function tree_init
@@ -61,32 +61,26 @@ contains
     if(self % value % key > n % key) then
        if(associated(self % left)) then
 
-          ! print*,"go to LEFT"
           call self % left % add_node(n)
           
        else
 
-          ! print*,"new left allocation for value = ", n % val, " key = ", n % key
           allocate(new_node)
           new_node % value = n
           new_node % NodeDepth = self % NodeDepth + 1
-          ! print*,"for key = ", n % key,", depth is", new_node % NodeDepth
           self % left => new_node
           
        end if
     else
        if(associated(self % right)) then
 
-          ! print*,"go to the RIGHT"
           call self % right % add_node(n)
           
        else
 
-          ! print*,"new right allocation for value = ", n % val, " key = ", n % key
           allocate(new_node)
           new_node % value = n
           new_node % NodeDepth = self % NodeDepth + 1
-          ! print*,"for key = ", n % key,", depth is", new_node % NodeDepth
           self % right => new_node
           
        end if
@@ -254,9 +248,8 @@ contains
   type (tree) function rebalance_tree(OldTree) result(NewTree)
     type (tree), intent(in) :: OldTree
     type (pair), dimension(:), pointer :: Arr
-    integer :: num, middle, first_start, first_end, sec_start, sec_end
-    ! integer :: real_middle
-    ! logical :: first_call
+    integer :: num, middle, first_start, first_end
+    logical :: first_call
 
     num = OldTree % get_nodes()
     allocate(Arr(num))
@@ -267,23 +260,10 @@ contains
  
        first_start = 1
        middle = (num + first_start)/2
-       ! real_middle = middle
-       NewTree = tree_init(Arr(middle))
-
-       first_end = middle
-       sec_start = middle
-       sec_end = num + 1
-
-       ! first_call = .true.
+       first_end = num + 1
+       first_call = .true.
        
-       middle = (first_end + first_start)/2
-       
-       call rebalance_add(NewTree, Arr, middle, first_start, first_end) !, real_middle, first_call)
-
-       ! first_call = .false.
-       middle = (sec_end + sec_start)/2
-
-       call rebalance_add(NewTree, Arr, middle, sec_start, sec_end) !, real_middle, first_call)
+       call rebalance_add(NewTree, Arr, middle, first_start, first_end, first_call)
        
     else if(num == 1) then
        print*,"Nothing to rebalance"
@@ -298,33 +278,21 @@ contains
     deallocate(Arr)
   end function rebalance_tree
 
-  recursive subroutine rebalance_add(MyTree, array, index, start, end) !, real_middle, first_call)
+  recursive subroutine rebalance_add(MyTree, array, index, start, end, first_call)
     type (tree), intent(inout) :: MyTree
     integer, intent(inout) :: index
     integer, intent(inout) :: start
     integer, intent(inout) :: end
     type (pair), dimension(:), intent(in) :: array
-    ! integer, intent(in) :: real_middle
-    ! logical, intent(inout) :: first_call
+    logical, intent(inout) :: first_call
     integer :: midpoint_left, midpoint_right, first_end, sec_start
 
-    ! all these if (first_call) are needed because otherwise
-    ! the init value of the new tree is written twice
-    ! I am pretty shure that there is more clever ways
-    ! to avoid this, but I don't have enough time...
-    ! I'm really sorry
-
-    call MyTree % add_tree(array(index))
-
-    ! if (first_call .eqv. .true.)then
-    !    call MyTree % add_tree(array(index))
-    ! else
-    !    if(first_call .eqv. .false.) then
-    !       ! if(index > real_middle) then
-    !          call MyTree % add_tree(array(index))
-    !       ! end if
-    !    end if
-    ! end if
+    if (first_call .eqv. .true.)then
+       MyTree = tree_init(array(index))
+       first_call = .false.
+    else
+       call MyTree % add_tree(array(index))
+    end if
     
     if(index > 1 .and. index >= start .and. index < end) then
        first_end = index
@@ -332,8 +300,8 @@ contains
        midpoint_left = (index + start) / 2
        midpoint_right = (end + index) / 2
 
-       call rebalance_add(MyTree, array, midpoint_left, start, first_end) !, real_middle, first_call)
-       call rebalance_add(MyTree, array, midpoint_right, sec_start, end) !, real_middle, first_call)
+       call rebalance_add(MyTree, array, midpoint_left, start, first_end, first_call)
+       call rebalance_add(MyTree, array, midpoint_right, sec_start, end, first_call)
 
     end if
     
