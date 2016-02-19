@@ -7,6 +7,7 @@ module MyTree
      type (pair) :: value
      type (node), pointer :: left => NULL()
      type (node), pointer :: right => NULL()
+     integer :: NodeDepth
      
    contains
      procedure :: add_node
@@ -32,6 +33,7 @@ contains
     type (pair), intent(in) :: n
     
     new_tree % root % value = n
+    new_tree % root % NodeDepth = 1 ! minimum depth = 1
     new_tree % n_nodes = 1
     
   end function tree_init
@@ -58,6 +60,8 @@ contains
           print*,"new left allocation for value = ", n % val
           allocate(new_node)
           new_node % value = n
+          new_node % NodeDepth = self % NodeDepth + 1
+          print*,"for key = ", n % key,", depth is", new_node % NodeDepth
           self % left => new_node
        end if
     else
@@ -68,6 +72,8 @@ contains
           print*,"new right allocation for value = ", n % val
           allocate(new_node)
           new_node % value = n
+          new_node % NodeDepth = self % NodeDepth + 1
+          print*,"for key = ", n % key,", depth is", new_node % NodeDepth
           self % right => new_node
        end if
     end if
