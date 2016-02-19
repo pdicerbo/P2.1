@@ -1,0 +1,10 @@
+Some comments
+==============================================
+
+This is a brief report about the exercises done during the P2.1.
+I'm really sorry, but I don't have enough time to implement the **hybrid sort** because I spent to much time
+to implement by myself the **merge sort** algorithm. In each folder (D1, D2, D3), **make** will produce
+the executable corresponding to the ##_name.f90 source code. In D2/part-2/results you can find
+some timing data obtained running the correspondent executable. I'm really sorry, but I don't have enough
+time to comment these results. However, each code is valgrind clean and for details about the implementation
+you can directly ask to me.
