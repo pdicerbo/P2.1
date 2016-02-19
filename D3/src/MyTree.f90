@@ -1,6 +1,6 @@
 module MyTree
   use list_types
-  use sorting
+
   implicit none
   
   type node
