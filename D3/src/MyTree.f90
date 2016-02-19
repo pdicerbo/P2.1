@@ -250,5 +250,20 @@ contains
     end if
     
   end subroutine get_all_nodes
+
+  type (tree) function rebalance_tree(OldTree) result(NewTree)
+    type (tree), intent(inout) :: OldTree
+    type (pair), dimension(:), pointer :: Arr
+    integer :: num
+
+    num = OldTree % get_nodes()
+    allocate(Arr(num))
+
+    call OldTree % extract_sorted_array(Arr)
+
+    NewTree = tree_init(Arr(num / 2))
+    
+    deallocate(Arr)
+  end function rebalance_tree
   
 end module MyTree
