@@ -81,12 +81,14 @@ module list_types
   end type node
 
   type tree
+     private
      type (node) :: root
-     integer :: depth
+     integer :: n_nodes
      
    contains
      procedure :: add_tree
      procedure :: free_tree
+     procedure :: get_nodes
   end type tree
 
   
@@ -406,6 +408,7 @@ contains
     type (pair), intent(in) :: n
     
     new_tree % root % value = n
+    new_tree % n_nodes = 1
     
   end function tree_init
 
@@ -414,6 +417,7 @@ contains
     type (pair), intent(in) :: n
 
     call self % root % add_node(n)
+    self % n_nodes = self % n_nodes + 1
     
   end subroutine add_tree
 
@@ -422,7 +426,7 @@ contains
     type (pair), intent(in) :: n
     type (node), pointer :: new_node
     
-    if(self % value % val > n % val) then
+    if(self % value % key > n % key) then
        if(associated(self % left)) then
           print*,"go to left"
           call self % left % add_node(n)
@@ -449,7 +453,8 @@ contains
     class (tree), intent(inout) :: self
 
     call self % root % free_all_nodes()
-
+    self % n_nodes = 1
+    
   end subroutine free_tree
 
   recursive subroutine free_all_nodes(self)
@@ -465,5 +470,11 @@ contains
     end if
     
   end subroutine free_all_nodes
+
+  integer function get_nodes(self) result(NNodes)
+    class (tree), intent(in) :: self
+
+    NNodes = self % n_nodes
+  end function get_nodes
   
 end module list_types
