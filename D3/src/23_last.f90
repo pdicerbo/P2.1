@@ -62,13 +62,15 @@ PROGRAM TreeTest
   allocate(to_extract(num))
 
   call RealTree % extract_sorted_array(to_extract)
-  
+  print*,"First Tree"
+  call RealTree % print_tree_depth()
   allocate(SecondTree)
   
   SecondTree = Rebalance_Tree(RealTree)
   ! print*,"SecondTree nodes: ", SecondTree % get_nodes()
-  ! call SecondTree % print_tree_depth()
-
+  call SecondTree % print_tree_depth()
+  print*,"SecondTree nodes = ", SecondTree % get_nodes(), "FirstTree nodes = ", RealTree % get_nodes()
+  
   call SecondTree % free_tree()
   call RealTree % free_tree()
   

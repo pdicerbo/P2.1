@@ -61,7 +61,7 @@ PROGRAM TreeTest
   allocate(to_extract(num))
 
   call RealTree % extract_sorted_array(to_extract)
-  
+  ! print*,to_extract
   call RealTree % free_tree()
 
   deallocate(to_extract)

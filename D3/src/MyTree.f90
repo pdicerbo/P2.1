@@ -252,18 +252,86 @@ contains
   end subroutine get_all_nodes
 
   type (tree) function rebalance_tree(OldTree) result(NewTree)
-    type (tree), intent(inout) :: OldTree
+    type (tree), intent(in) :: OldTree
     type (pair), dimension(:), pointer :: Arr
-    integer :: num
+    integer :: num, middle, first_start, first_end, sec_start, sec_end
+    integer :: real_middle
 
     num = OldTree % get_nodes()
     allocate(Arr(num))
 
     call OldTree % extract_sorted_array(Arr)
 
-    NewTree = tree_init(Arr(num / 2))
+    if(num > 1) then
+       ! middle = 5!(num + 1) / 2 ! in this way I obtain always the middle both for num even or odd
+       ! start = 1
+       ! end = 10 !num
+       ! middle = (num + 1) / 2 ! in this way I obtain always the middle both for num even or odd
+
+       first_start = 1
+       middle = (num + first_start)/2
+       real_middle = middle
+       NewTree = tree_init(Arr(middle))
+
+       first_end = real_middle
+       sec_start = real_middle
+       sec_end = num + 1
+
+       ! first_call = .true.
+       
+       middle = (first_end + first_start)/2
+       print*,"First Middle ", middle, "first end = ", first_end, "diff", first_end-first_start
+       
+       call rebalance_add(NewTree, Arr, middle, first_start, first_end, real_middle)
+       print*,"SecondTree nodes = ", NewTree % get_nodes()
+
+       middle = (sec_end + sec_start)/2
+       print*,"Sec Middle ", middle,"sec_start =", sec_start, "sec end = ", sec_end, "diff", sec_end-sec_start
+
+       call rebalance_add(NewTree, Arr, middle, sec_start, sec_end, real_middle)
+       print*,"SecondTree nodes = ", NewTree % get_nodes()
+       
+    else if(num == 1) then
+       print*,"Nothing to rebalance"
+       print*,"Initialization for the new tree"
+       NewTree = tree_init(Arr(num))
+    else
+       print*,"Bad input in rebalancing function"
+       print*,"return"
+       return
+    end if
     
     deallocate(Arr)
   end function rebalance_tree
+
+  recursive subroutine rebalance_add(MyTree, array, index, start, end, real_middle)
+    type (tree), intent(inout) :: MyTree
+    integer, intent(inout) :: index
+    integer, intent(inout) :: start
+    integer, intent(inout) :: end
+    type (pair), dimension(:), intent(in) :: array
+    integer, intent(in) :: real_middle
+    ! logical, intent(inout) :: first_call
+    integer :: midpoint_left, midpoint_right, first_end, sec_start
+
+    ! if (first_call .eqv. .true.)then
+    !    MyTree = tree_init(array(index))
+    !    first_call = .false.
+    ! else
+    call MyTree % add_tree(array(index))
+       ! write(*,*)"written elemen ", index, " nodes = ",MyTree % get_nodes()
+    ! end if
+    
+    if(index > 1 .and. index > start .and. index < end) then
+       first_end = index
+       sec_start = index+1
+       midpoint_left = (index + start) / 2
+       midpoint_right = (end + index) / 2
+       ! print*,index, midpoint_left, midpoint_right, start, new_end
+       call rebalance_add(MyTree, array, midpoint_left, start, first_end, real_middle)
+       call rebalance_add(MyTree, array, midpoint_right, sec_start, end, real_middle)
+    end if
+    
+  end subroutine
   
 end module MyTree
