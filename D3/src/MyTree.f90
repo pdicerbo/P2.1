@@ -13,6 +13,7 @@ module MyTree
      procedure :: add_node
      procedure :: free_all_nodes
      procedure :: find_in_nodes
+     procedure :: find_depth
   end type node
   
   type tree
@@ -25,6 +26,7 @@ module MyTree
      procedure :: free_tree
      procedure :: get_nodes
      procedure :: find_in_tree
+     procedure :: print_tree_depth
   end type tree
 
 contains
@@ -33,7 +35,7 @@ contains
     type (pair), intent(in) :: n
     
     new_tree % root % value = n
-    new_tree % root % NodeDepth = 1 ! minimum depth = 1
+    new_tree % root % NodeDepth = 1 ! "minimum" depth = 1
     new_tree % n_nodes = 1
     
   end function tree_init
@@ -147,4 +149,31 @@ contains
     
   end function find_in_nodes
 
+  subroutine print_tree_depth(self)
+    class (tree), intent(in) :: self
+    integer :: depth
+    depth = 0
+    depth = self % root % find_depth(self % root % NodeDepth)
+    print*,""
+    print*,"The depth of the tree is equal to ", depth
+    print*,""
+  end subroutine print_tree_depth
+
+  recursive integer function find_depth(self, in_depth) result(depth)
+    class (node), intent(in) :: self
+    integer, intent(in) :: in_depth
+    
+    if(self % NodeDepth > in_depth) then
+       depth = self % NodeDepth
+    end if
+
+    if(associated(self % left)) then
+       depth = self % left % find_depth(in_depth)
+    end if
+    if(associated(self % right)) then
+       depth = self % right % find_depth(in_depth)
+    end if
+    
+  end function find_depth
+  
 end module MyTree

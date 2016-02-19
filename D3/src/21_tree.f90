@@ -65,7 +65,8 @@ PROGRAM MyFirstTree
   key_to_find = 5
   findpair = FirstTree % find_in_tree(key_to_find) 
 
-  print*,""
+
+  call FirstTree % print_tree_depth()
   print*,""
   print*,"find key = ", key_to_find
   print*,"key found =", findpair % key,"val = ", findpair % val 
