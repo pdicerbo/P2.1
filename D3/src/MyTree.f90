@@ -264,11 +264,7 @@ contains
     call OldTree % extract_sorted_array(Arr)
 
     if(num > 1) then
-       ! middle = 5!(num + 1) / 2 ! in this way I obtain always the middle both for num even or odd
-       ! start = 1
-       ! end = 10 !num
-       ! middle = (num + 1) / 2 ! in this way I obtain always the middle both for num even or odd
-
+ 
        first_start = 1
        middle = (num + first_start)/2
        real_middle = middle
@@ -317,18 +313,20 @@ contains
     ! I am pretty shure that there is more clever ways
     ! to avoid this, but I don't have enough time...
     ! I'm really sorry
+
+    call MyTree % add_tree(array(index))
+
+    ! if (first_call .eqv. .true.)then
+    !    call MyTree % add_tree(array(index))
+    ! else
+    !    if(first_call .eqv. .false.) then
+    !       ! if(index > real_middle) then
+    !          call MyTree % add_tree(array(index))
+    !       ! end if
+    !    end if
+    ! end if
     
-    if (first_call .eqv. .true.)then
-       call MyTree % add_tree(array(index))
-    else
-       if(first_call .eqv. .false.) then
-          if(index > real_middle) then
-             call MyTree % add_tree(array(index))
-          end if
-       end if
-    end if
-    
-    if(index > 1 .and. index > start .and. index < end) then
+    if(index > 1 .and. index >= start .and. index < end) then
        first_end = index
        sec_start = index+1
        midpoint_left = (index + start) / 2
