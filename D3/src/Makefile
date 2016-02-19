@@ -15,16 +15,13 @@ default: $(EXEC)
 list_tools.o: list_tools.f90 list_types.o
 	$(CC) $(FFLAGS) -c $<
 
-sorting.o: sorting.f90
-	$(CC) $(FFLAGS) -c $<
-
 %.o: %.f90
 	$(CC) $(FFLAGS) -c $^
 
 # here you have to put the rules for produces the executables
 # with the correct object files you want to include
 
-../%.x: sorting.o list_types.o %.o #tools.o %.o
+../%.x: sorting.o list_types.o MyTree.o %.o #tools.o %.o
 	$(CC) -o $@ $(FFLAGS) $^
 
 clean:
