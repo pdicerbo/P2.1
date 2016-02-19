@@ -6,5 +6,5 @@ I'm really sorry, but I don't have enough time to implement the **hybrid sort** 
 in implementing the **merge sort** algorithm by myself. In each folder (D1, D2, D3), **make** will produce
 the executable corresponding to the ##_name.f90 source code. In D2/part-2/results you can find
 some timing data obtained by running the related executables. Unfortunately, due to the lack of time I didn't
-comment these results. However, each code is **valgrind clean** and if you want some more details about the implementation,
-feel free to ask me.
+comment these results. However, each code is **valgrind clean**, I only have still some problems in rebalancing the tree.
+If you want some more details about the implementation, feel free to ask me.

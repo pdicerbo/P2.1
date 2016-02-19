@@ -68,7 +68,8 @@ PROGRAM TreeTest
   SecondTree = Rebalance_Tree(RealTree)
 
   call SecondTree % print_tree_depth()
-  ! print*,"SecondTree nodes = ", SecondTree % get_nodes()
+  call SecondTree % print_nleafs()
+  print*,"SecondTree nodes = ", SecondTree % get_nodes()
   CALL CPU_TIME(time1)
 
   DO i=1,nlook
