@@ -57,20 +57,26 @@ PROGRAM TreeTest
      p = RealTree % find_in_tree(idx(i))
   END DO
   CALL CPU_TIME(time2)
-  WRITE(*,FMT=666) nlook, 'Linked List lookups', (time2-time1)*1000.0
+  WRITE(*,FMT=666) nlook, 'Unbalanced Tree lookups', (time2-time1)*1000.0
 
   allocate(to_extract(num))
 
   call RealTree % extract_sorted_array(to_extract)
-  print*,"First Tree"
   call RealTree % print_tree_depth()
   allocate(SecondTree)
   
   SecondTree = Rebalance_Tree(RealTree)
 
-  ! print*,"SecondTree nodes: ", SecondTree % get_nodes()
   call SecondTree % print_tree_depth()
-  ! print*,"SecondTree nodes = ", SecondTree % get_nodes(), "FirstTree nodes = ", RealTree % get_nodes()
+  ! print*,"SecondTree nodes = ", SecondTree % get_nodes()
+  CALL CPU_TIME(time1)
+
+  DO i=1,nlook
+     ! XXX do linked list or hash table lookups here
+     p = SecondTree % find_in_tree(idx(i))
+  END DO
+  CALL CPU_TIME(time2)
+  WRITE(*,FMT=666) nlook, 'Balanced Tree lookups', (time2-time1)*1000.0
   
   call SecondTree % free_tree()
   call RealTree % free_tree()
