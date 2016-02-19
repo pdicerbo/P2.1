@@ -15,6 +15,7 @@ module MyTree
      procedure :: find_in_nodes
      procedure :: find_depth
      procedure :: leafs_enum
+     procedure :: get_all_nodes
   end type node
   
   type tree
@@ -29,6 +30,7 @@ module MyTree
      procedure :: find_in_tree
      procedure :: print_tree_depth
      procedure :: print_nleafs
+     procedure :: extract_sorted_array
   end type tree
 
 contains
@@ -214,6 +216,32 @@ contains
     
   end subroutine leafs_enum
 
+  subroutine extract_sorted_array(self, array)
+    class (tree), intent(in) :: self
+    type (pair), dimension(:), intent(inout) :: array
+    integer :: index
 
+    index = 1    
+    call self % root % get_all_nodes(array, index)
+    
+  end subroutine extract_sorted_array
+
+  recursive subroutine get_all_nodes(self, array, index)
+    class (node), intent(in) :: self
+    type(pair), dimension(:), intent(inout) :: array
+    integer, intent(inout) :: index
+
+    array(index) = self % value
+    index = index + 1
+
+    if(associated(self % left)) then       
+       call self % left % get_all_nodes(array, index)
+    end if
+
+    if(associated(self % right)) then
+       call self % right % get_all_nodes(array, index)
+    end if
+    
+  end subroutine get_all_nodes
   
 end module MyTree

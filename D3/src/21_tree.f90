@@ -6,7 +6,8 @@ PROGRAM MyFirstTree
   
   type (pair) :: pair_init, findpair
   type (tree), pointer :: FirstTree
-  integer :: key_to_find
+  integer :: key_to_find, nn
+  type (pair), dimension(:), pointer :: to_extract
   
   allocate(FirstTree)
 
@@ -79,7 +80,12 @@ PROGRAM MyFirstTree
   print*,"find key = ", key_to_find
   print*,"key found =", findpair % key,"val = ", findpair % val 
   print*,""
-  
+
+  nn = FirstTree % get_nodes()
+  allocate(to_extract(nn))
+
+  call FirstTree % extract_sorted_array(to_extract)
+  print*,to_extract
   call FirstTree % free_tree()
   deallocate(FirstTree)
   
