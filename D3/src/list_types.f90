@@ -423,8 +423,6 @@ contains
     type (node), pointer :: new_node
     
     if(self % value % val > n % val) then
-       ! print*, "self val > input val"
-       ! print*, "self value: ", self % value % val, "input val: ", n % val
        if(associated(self % left)) then
           print*,"go to left"
           call self % left % add_node(n)
@@ -435,8 +433,6 @@ contains
           self % left => new_node
        end if
     else
-       ! print*, "self val <= input val"
-       ! print*, "self value: ", self % value % val, "input val: ", n % val
        if(associated(self % right)) then
           print*,"go to the right"
           call self % right % add_node(n)
