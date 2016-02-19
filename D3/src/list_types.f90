@@ -69,6 +69,27 @@ module list_types
      module procedure init_stack_ll
      module procedure copy_constr_ll
   end interface Stack_Init
+
+  type node
+     type (pair) :: value
+     type (node), pointer :: left => NULL()
+     type (node), pointer :: right => NULL()
+
+   contains
+     procedure :: add_node
+     
+  end type node
+
+  type tree
+     type (node) :: root
+     integer :: depth
+     
+   contains
+     procedure :: add_tree
+
+  end type tree
+
+  
   
 contains
   ! trivial implementation of the function
@@ -82,7 +103,6 @@ contains
        next_prime = 2
     else
        
-       ! count = 2
        nprime = n + 1
        
        do
@@ -285,8 +305,10 @@ contains
   
   integer function length(self) result(l)
     class (StackArray), intent(in) :: self
+
     ! number of items within the StackArray
     l = self % index - 1
+
   end function length
   
   subroutine free_stack(self)
@@ -353,6 +375,7 @@ contains
   end subroutine free_stack_ll
 
   type (pair) function  pop_ll(self) result(ret)
+
     class (StackList), intent(inout) :: self
     type (LinkedList), pointer :: first
     type (LinkedList), pointer :: sec
@@ -378,5 +401,52 @@ contains
     self % len = self % len - 1
     
   end function pop_ll
+
+  type (tree) function tree_init(n) result(new_tree)
+    type (pair), intent(in) :: n
+    
+    new_tree % root % value = n
+    
+  end function tree_init
+
+  subroutine add_tree(self, n)
+    class (tree), intent(inout) :: self
+    type (pair), intent(in) :: n
+
+    call self % root % add_node(n)
+    
+  end subroutine add_tree
+
+  recursive subroutine add_node(self, n)
+    class (node), intent (inout) :: self
+    type (pair), intent(in) :: n
+    type (node), pointer :: new_node
+    
+    if(self % value % val > n % val) then
+       ! print*, "self val > input val"
+       ! print*, "self value: ", self % value % val, "input val: ", n % val
+       if(associated(self % left)) then
+          print*,"go to left"
+          call self % left % add_node(n)
+       else
+          print*,"new left allocation for value = ", n % val
+          allocate(new_node)
+          new_node % value = n
+          self % left => new_node
+       end if
+    else
+       ! print*, "self val <= input val"
+       ! print*, "self value: ", self % value % val, "input val: ", n % val
+       if(associated(self % right)) then
+          print*,"go to the right"
+          call self % right % add_node(n)
+       else
+          print*,"new right allocation for value = ", n % val
+          allocate(new_node)
+          new_node % value = n
+          self % right => new_node
+       end if
+    end if
+  end subroutine add_node
   
 end module list_types
