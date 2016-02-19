@@ -88,5 +88,5 @@ PROGRAM MyFirstTree
   print*,to_extract
   call FirstTree % free_tree()
   deallocate(FirstTree)
-  
+  deallocate(to_extract)
 END PROGRAM MyFirstTree
