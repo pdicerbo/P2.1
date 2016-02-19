@@ -231,12 +231,12 @@ contains
     type(pair), dimension(:), intent(inout) :: array
     integer, intent(inout) :: index
 
-    array(index) = self % value
-    index = index + 1
-
     if(associated(self % left)) then       
        call self % left % get_all_nodes(array, index)
     end if
+
+    array(index) = self % value
+    index = index + 1
 
     if(associated(self % right)) then
        call self % right % get_all_nodes(array, index)
