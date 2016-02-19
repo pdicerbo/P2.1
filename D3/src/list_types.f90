@@ -77,7 +77,7 @@ module list_types
 
    contains
      procedure :: add_node
-     
+     procedure :: free_all_nodes
   end type node
 
   type tree
@@ -86,7 +86,7 @@ module list_types
      
    contains
      procedure :: add_tree
-
+     procedure :: free_tree
   end type tree
 
   
@@ -444,5 +444,26 @@ contains
        end if
     end if
   end subroutine add_node
+
+  subroutine free_tree(self)
+    class (tree), intent(inout) :: self
+
+    call self % root % free_all_nodes()
+
+  end subroutine free_tree
+
+  recursive subroutine free_all_nodes(self)
+    class (node), intent(inout) :: self
+
+    if(associated(self % left)) then
+       call self % left % free_all_nodes()
+       deallocate(self % left)
+    end if
+    if(associated(self % right)) then
+       call self % right % free_all_nodes()
+       deallocate(self % right)
+    end if
+    
+  end subroutine free_all_nodes
   
 end module list_types

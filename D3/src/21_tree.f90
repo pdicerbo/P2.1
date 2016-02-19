@@ -45,6 +45,7 @@ PROGRAM MyFirstTree
   print*,"add val = ", pair_init % val
   call MyTree % add_tree(pair_init)
 
+  call MyTree % free_tree()
   deallocate(MyTree)
   
 END PROGRAM MyFirstTree
