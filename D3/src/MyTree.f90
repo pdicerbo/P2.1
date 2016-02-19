@@ -294,7 +294,7 @@ contains
        call MyTree % add_tree(array(index))
     end if
     
-    if(index > 1 .and. index >= start .and. index < end) then
+    if(index > 1 .and. index > start .and. index < end) then
        first_end = index
        sec_start = index+1
        midpoint_left = (index + start) / 2
