@@ -14,6 +14,7 @@ module MyTree
      procedure :: free_all_nodes
      procedure :: find_in_nodes
      procedure :: find_depth
+     procedure :: leafs_enum
   end type node
   
   type tree
@@ -27,6 +28,7 @@ module MyTree
      procedure :: get_nodes
      procedure :: find_in_tree
      procedure :: print_tree_depth
+     procedure :: print_nleafs
   end type tree
 
 contains
@@ -56,10 +58,10 @@ contains
     
     if(self % value % key > n % key) then
        if(associated(self % left)) then
-          print*,"go to left"
+          print*,"go to LEFT"
           call self % left % add_node(n)
        else
-          print*,"new left allocation for value = ", n % val
+          print*,"new left allocation for value = ", n % val, " key = ", n % key
           allocate(new_node)
           new_node % value = n
           new_node % NodeDepth = self % NodeDepth + 1
@@ -68,10 +70,10 @@ contains
        end if
     else
        if(associated(self % right)) then
-          print*,"go to the right"
+          print*,"go to the RIGHT"
           call self % right % add_node(n)
        else
-          print*,"new right allocation for value = ", n % val
+          print*,"new right allocation for value = ", n % val, " key = ", n % key
           allocate(new_node)
           new_node % value = n
           new_node % NodeDepth = self % NodeDepth + 1
@@ -152,28 +154,66 @@ contains
   subroutine print_tree_depth(self)
     class (tree), intent(in) :: self
     integer :: depth
-    depth = 0
-    depth = self % root % find_depth(self % root % NodeDepth)
+    depth = 1
+    call self % root % find_depth(depth)
     print*,""
     print*,"The depth of the tree is equal to ", depth
     print*,""
   end subroutine print_tree_depth
 
-  recursive integer function find_depth(self, in_depth) result(depth)
+  recursive subroutine find_depth(self, depth)
     class (node), intent(in) :: self
-    integer, intent(in) :: in_depth
+    integer, intent(inout) :: depth
     
-    if(self % NodeDepth > in_depth) then
+    if(self % NodeDepth > depth) then
        depth = self % NodeDepth
     end if
 
     if(associated(self % left)) then
-       depth = self % left % find_depth(in_depth)
+       call self % left % find_depth(depth)
     end if
     if(associated(self % right)) then
-       depth = self % right % find_depth(in_depth)
+       call self % right % find_depth(depth)
     end if
     
-  end function find_depth
+  end subroutine find_depth
+
+  subroutine print_nleafs(self)
+    class (tree), intent(in) :: self
+    integer :: leafs
+    leafs = 0
+    call self % root % leafs_enum(leafs)
+    print*,""
+    print*,"The number of the leafs of the tree is equal to ", leafs
+    print*,""
+  end subroutine print_nleafs
+
+  recursive subroutine leafs_enum(self, nl)
+    class (node), intent(in) :: self
+    integer, intent(inout) :: nl
+
+    if(associated(self % left)) then
+       
+       call self % left % leafs_enum(nl)
+       if(.not. associated(self % right)) then
+          nl = nl + 1
+       end if
+       
+    end if
+
+    if(associated(self % right)) then
+
+       call self % right % leafs_enum(nl)
+
+       if(.not. associated(self % left)) then
+          print*,"IM IN (.not. left), key = ", self % value % key, "; nl = ", nl
+          nl = nl + 1
+       end if
+       
+    end if
+    
+  end subroutine leafs_enum
+
+
   
 end module MyTree

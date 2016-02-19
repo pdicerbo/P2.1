@@ -62,11 +62,19 @@ PROGRAM MyFirstTree
   call FirstTree % add_tree(pair_init)
   print*,"now NNodes = ", FirstTree % get_nodes()
 
+  pair_init % key = 0
+  pair_init % val = 15.
+  print*,""
+  print*,"add val = ", pair_init % val, "with key = ", pair_init % key
+  call FirstTree % add_tree(pair_init)
+  print*,"now NNodes = ", FirstTree % get_nodes()
+
   key_to_find = 5
   findpair = FirstTree % find_in_tree(key_to_find) 
 
 
   call FirstTree % print_tree_depth()
+  call FirstTree % print_nleafs()
   print*,""
   print*,"find key = ", key_to_find
   print*,"key found =", findpair % key,"val = ", findpair % val 
