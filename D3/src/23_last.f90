@@ -69,6 +69,7 @@ PROGRAM TreeTest
 
   call SecondTree % print_tree_depth()
   call SecondTree % print_nleafs()
+
   print*,"SecondTree nodes = ", SecondTree % get_nodes()
   CALL CPU_TIME(time1)
 
