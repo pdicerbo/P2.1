@@ -280,9 +280,9 @@ contains
 
   recursive subroutine rebalance_add(MyTree, array, index, start, end, first_call)
     type (tree), intent(inout) :: MyTree
-    integer, intent(inout) :: index
-    integer, intent(inout) :: start
-    integer, intent(inout) :: end
+    integer, intent(in) :: index
+    integer, intent(in) :: start
+    integer, intent(in) :: end
     type (pair), dimension(:), intent(in) :: array
     logical, intent(inout) :: first_call
     integer :: midpoint_left, midpoint_right, first_end, sec_start
@@ -294,14 +294,18 @@ contains
        call MyTree % add_tree(array(index))
     end if
     
-    if(index > 1 .and. index >= start .and. index < end) then
+    if(index > start .and. index < end) then 
        first_end = index
        sec_start = index+1
+
        midpoint_left = (index + start) / 2
-       midpoint_right = (end + index) / 2
+       midpoint_right = (end + index+1) / 2
 
        call rebalance_add(MyTree, array, midpoint_left, start, first_end, first_call)
-       call rebalance_add(MyTree, array, midpoint_right, sec_start, end, first_call)
+       
+       if(midpoint_right .ne. end) then
+          call rebalance_add(MyTree, array, midpoint_right, sec_start, end, first_call)
+       end if
 
     end if
     

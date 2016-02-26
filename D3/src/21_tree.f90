@@ -6,12 +6,14 @@ PROGRAM MyFirstTree
   
   type (pair) :: pair_init, findpair
   type (tree), pointer :: FirstTree
-  integer :: key_to_find, nn
-  type (pair), dimension(:), pointer :: to_extract
+  type (tree), pointer :: SecondTree
+  integer :: key_to_find, nn, nnn
+  type (pair), dimension(:), pointer :: to_extract, next_extract
   
   allocate(FirstTree)
+  allocate(SecondTree)
 
-  pair_init % key = 4
+  pair_init % key = 1
   pair_init % val = 20.
   print*,"Tree init"
   FirstTree = tree_init(pair_init)
@@ -35,7 +37,7 @@ PROGRAM MyFirstTree
   call FirstTree % add_tree(pair_init)
   print*,"now NNodes = ", FirstTree % get_nodes()
   
-  pair_init % key = 1
+  pair_init % key = 4
   pair_init % val = 17.
   print*,""
   print*,"add val = ", pair_init % val, "with key = ", pair_init % key
@@ -84,9 +86,25 @@ PROGRAM MyFirstTree
   nn = FirstTree % get_nodes()
   allocate(to_extract(nn))
 
+  call FirstTree % print_tree_depth()
+  print*,"FirstTree nodes = ", FirstTree % get_nodes()
+  print*,""
   call FirstTree % extract_sorted_array(to_extract)
   print*,to_extract
+
+  SecondTree = Rebalance_Tree(FirstTree)
+
+  nnn = SecondTree % get_nodes()
+  allocate(next_extract(nnn))
+
+  call SecondTree % extract_sorted_array(next_extract)
+  print*,next_extract
+
+  call SecondTree % print_tree_depth()
+  print*,"SecondTree nodes = ", SecondTree % get_nodes()
+
   call FirstTree % free_tree()
+  call SecondTree % free_tree()
   deallocate(FirstTree)
   deallocate(to_extract)
 END PROGRAM MyFirstTree
